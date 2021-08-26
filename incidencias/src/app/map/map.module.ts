@@ -9,6 +9,8 @@ import { MapaCallesReportadasComponent } from './components/mapa-calles-reportad
 import { MapaDivisionAlcaldiasComponent } from './components/mapa-division-alcaldias/mapa-division-alcaldias.component';
 import { PageMapcrComponent } from './pages/page-mapcr/page-mapcr.component';
 import { PageMapsComponent } from './pages/page-maps/page-maps.component';
+import { PageMaptdComponent } from './pages/page-maptd/page-maptd.component';
+
 
 
 
@@ -21,7 +23,9 @@ import { PageMapsComponent } from './pages/page-maps/page-maps.component';
     MapaTraficoDensoComponent, 
     MapasSemaforosCallesCerradasComponent, 
     MapaCallesReportadasComponent, 
-    MapaDivisionAlcaldiasComponent, PageMapsComponent
+    MapaDivisionAlcaldiasComponent, 
+    PageMapsComponent, 
+    PageMaptdComponent,
   ],
   imports: [
     CommonModule

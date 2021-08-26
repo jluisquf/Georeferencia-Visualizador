@@ -1,7 +1,7 @@
 <div id='hola' class="container-fluid">
     <h3>Incidencias de la ciudad de mexico</h3>
 
-    <form [formGroup]="listform" (ngSubmit)="onSubmit()">
+    <form formGroup="listform" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="col-sm-4">
             <select class="d-inline form-control " formControlName="anio">
@@ -33,11 +33,11 @@
     <div>
       <div style="display: block">
         <canvas baseChart
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType">
+          [datasets]?="barChartData"
+          [labels]?="barChartLabels"
+          [options]?="barChartOptions"
+          [legend]?="barChartLegend"
+          [chartType]?="barChartType">
         </canvas>
       </div>
       <!-- <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button> -->
