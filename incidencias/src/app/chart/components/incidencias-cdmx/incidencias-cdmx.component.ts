@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-// import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Label } from 'ng2-charts';
-import { FormBuilder, FormGroup, FormGroupName } from "@angular/forms"; @Component({
+import { FormBuilder, FormGroup, FormGroupName } from "@angular/forms";
+
+
+@Component({
   selector: 'app-incidencias-cdmx',
   templateUrl: './incidencias-cdmx.component.html',
   styleUrls: ['./incidencias-cdmx.component.css']

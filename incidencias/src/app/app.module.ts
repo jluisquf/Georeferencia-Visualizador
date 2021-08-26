@@ -18,6 +18,7 @@ import { MapService } from './services/map.service';
 
 import { SharedModule } from './shared/shared.module';
 import { MapModule } from './map/map.module';
+import { ChartModule } from './chart/chart.module';
 
 
 
@@ -52,7 +53,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     SweetAlert2Module.forRoot(),
     FormsModule,
 
-
+    ChartModule,
     SharedModule,
     MapModule,
     

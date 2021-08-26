@@ -7,17 +7,21 @@ import { MapaTraficoDensoComponent } from './components/mapa-trafico-denso/mapa-
 import { MapasSemaforosCallesCerradasComponent } from './components/mapas-semaforos-calles-cerradas/mapas-semaforos-calles-cerradas.component';
 import { MapaCallesReportadasComponent } from './components/mapa-calles-reportadas/mapa-calles-reportadas.component';
 import { MapaDivisionAlcaldiasComponent } from './components/mapa-division-alcaldias/mapa-division-alcaldias.component';
+import { PageMapcrComponent } from './pages/page-mapcr/page-mapcr.component';
+import { PageMapsComponent } from './pages/page-maps/page-maps.component';
+
 
 
 @NgModule({
   declarations: [
-    PageMapComponent, 
+    PageMapComponent,
+    PageMapcrComponent,
     MapaIncidenciasComponent, 
     MapaTraficoComponent, 
     MapaTraficoDensoComponent, 
     MapasSemaforosCallesCerradasComponent, 
     MapaCallesReportadasComponent, 
-    MapaDivisionAlcaldiasComponent
+    MapaDivisionAlcaldiasComponent, PageMapsComponent
   ],
   imports: [
     CommonModule

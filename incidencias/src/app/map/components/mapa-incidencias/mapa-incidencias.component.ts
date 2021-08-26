@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'app-mapa-incidencias',
   templateUrl: './mapa-incidencias.component.html',
