@@ -8,7 +8,10 @@ import { HomeComponent } from './pages/home/home.component';
 
 
 @NgModule({
-  declarations: [FooterComponent, NavbarComponent, HomeComponent],
+  declarations: [
+    FooterComponent, 
+    NavbarComponent, 
+    HomeComponent],
   imports: [
     CommonModule,
     APP_ROUTING

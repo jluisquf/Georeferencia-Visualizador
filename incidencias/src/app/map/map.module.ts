@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageMapComponent } from './pages/page-map/page-map.component';
 import { MapaIncidenciasComponent } from './components/mapa-incidencias/mapa-incidencias.component';
 import { MapaTraficoComponent } from './components/mapa-trafico/mapa-trafico.component';
 import { MapaTraficoDensoComponent } from './components/mapa-trafico-denso/mapa-trafico-denso.component';
@@ -17,7 +16,6 @@ import { PageMapalComponent } from './pages/page-mapal/page-mapal.component';
 
 @NgModule({
   declarations: [
-    PageMapComponent,
     PageMapcrComponent,
     MapaIncidenciasComponent, 
     MapaTraficoComponent, 
