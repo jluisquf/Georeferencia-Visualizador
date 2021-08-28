@@ -10,6 +10,7 @@ import { PageMapcrComponent } from './pages/page-mapcr/page-mapcr.component';
 import { PageMapsComponent } from './pages/page-maps/page-maps.component';
 import { PageMaptdComponent } from './pages/page-maptd/page-maptd.component';
 import { PageMapalComponent } from './pages/page-mapal/page-mapal.component';
+import { PageMapainComponent } from './pages/page-mapain/page-mapain.component';
 
 
 
@@ -24,7 +25,7 @@ import { PageMapalComponent } from './pages/page-mapal/page-mapal.component';
     MapaCallesReportadasComponent, 
     MapaDivisionAlcaldiasComponent, 
     PageMapsComponent, 
-    PageMaptdComponent, PageMapalComponent,
+    PageMaptdComponent, PageMapalComponent, PageMapainComponent,
   ],
   imports: [
     CommonModule

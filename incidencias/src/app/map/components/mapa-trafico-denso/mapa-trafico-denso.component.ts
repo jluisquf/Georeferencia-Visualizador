@@ -1,8 +1,8 @@
-import { Component, OnInit, DoCheck, AfterViewInit, Injectable, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import { FormControl, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl,  Validators } from '@angular/forms';
 
 
 

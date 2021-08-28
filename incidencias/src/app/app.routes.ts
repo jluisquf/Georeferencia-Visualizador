@@ -4,6 +4,7 @@ import { PageMapcrComponent } from './map/pages/page-mapcr/page-mapcr.component'
 import { PageMapsComponent } from './map/pages/page-maps/page-maps.component';
 import { PageMaptdComponent } from './map/pages/page-maptd/page-maptd.component';
 import { PageMapalComponent } from './map/pages/page-mapal/page-mapal.component';
+import { PageMapainComponent } from './map/pages/page-mapain/page-mapain.component';
 import { HomeComponent } from './shared/pages/home/home.component';
 
 
@@ -13,6 +14,7 @@ const APP_ROUTES:Routes=[
 
     {path: 'home', component:HomeComponent},
     {path: 'graficas', component:PageChartComponent},
+    {path: 'mapatraficin', component:PageMapainComponent},
     {path: 'mapatraficod', component:PageMaptdComponent},
     {path: 'mapaalcaldias', component:PageMapalComponent},
     {path: 'mapacallesrep',component:PageMapcrComponent},

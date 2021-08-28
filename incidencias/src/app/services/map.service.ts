@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";//para comunicar con nuestra API REST
-import { MapComponent } from "../components/map/map.component";
 
 @Injectable({
   providedIn: 'root'
