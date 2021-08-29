@@ -14,17 +14,14 @@ import Swal from 'sweetalert2';
 })
 export class MapaIncidenciasComponent implements AfterViewInit {
 
-
-
-
-  @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
+    @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
   time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
   mapServiceU: MapService;
-  //TIMEPICKER
+  // TIMEPICKER
   minuteStep = 5;
-  //DECLARACION DE VARIABLES QUE SE IMPLEMENTAN EN EL FORMULARIO
+  // DECLARACION DE VARIABLES QUE SE IMPLEMENTAN EN EL FORMULARIO
   obtenerFecha: string = "";
-  lista: string[] = [""];//agrupa todos los lugares con incidencias
+  lista: string[] = [""];// agrupa todos los lugares con incidencias
   arr: any[] = [];
   selectedOptionLugar: string;
   ciudad: string;
@@ -85,8 +82,6 @@ export class MapaIncidenciasComponent implements AfterViewInit {
           this.lista = Object.values(data);
           this.lista.push("Todos");
       });
-
-
 
       this.mapClustering = new L.map(this.mapContainer.nativeElement).setView([19.37596, -99.07000], 11);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

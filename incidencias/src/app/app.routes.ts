@@ -6,7 +6,7 @@ import { PageMaptdComponent } from './map/pages/page-maptd/page-maptd.component'
 import { PageMapalComponent } from './map/pages/page-mapal/page-mapal.component';
 import { PageMapainComponent } from './map/pages/page-mapain/page-mapain.component';
 import { HomeComponent } from './shared/pages/home/home.component';
-
+import { PageMapcrUComponent } from './map/pages/page-mapcr-u/page-mapcr-u.component';
 
 
 //arreglo de rutas 
@@ -19,6 +19,7 @@ const APP_ROUTES:Routes=[
     {path: 'mapaalcaldias', component:PageMapalComponent},
     {path: 'mapacallesrep',component:PageMapcrComponent},
     {path: 'mapasemaforos',component:PageMapsComponent},
+    {path: 'mapaccrepususer',component:PageMapcrUComponent},
     {path: '**', pathMatch:'full', redirectTo:'home'}
    
 ];
