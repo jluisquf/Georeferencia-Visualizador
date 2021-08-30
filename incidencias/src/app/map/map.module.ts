@@ -13,6 +13,7 @@ import { PageMapalComponent } from './pages/page-mapal/page-mapal.component';
 import { PageMapainComponent } from './pages/page-mapain/page-mapain.component';
 import { PageMapcrUComponent } from './pages/page-mapcr-u/page-mapcr-u.component';
 import { MapaCallesReportadasUsuariosComponent } from './components/mapa-calles-reportadas-usuarios/mapa-calles-reportadas-usuarios.component';
+import { PageMaptComponent } from './pages/page-mapt/page-mapt.component';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { MapaCallesReportadasUsuariosComponent } from './components/mapa-calles-
     MapaCallesReportadasComponent, 
     MapaDivisionAlcaldiasComponent, 
     PageMapsComponent, 
-    PageMaptdComponent, PageMapalComponent, PageMapainComponent, MapaCallesReportadasUsuariosComponent,
+    PageMaptdComponent, PageMapalComponent, PageMapainComponent, MapaCallesReportadasUsuariosComponent, PageMaptComponent,
     
   ],
   imports: [
