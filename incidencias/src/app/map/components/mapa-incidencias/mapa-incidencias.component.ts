@@ -2,10 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-
-
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
-
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-mapa-incidencias',
@@ -25,13 +22,11 @@ export class MapaIncidenciasComponent implements AfterViewInit {
   arr: any[] = [];
   selectedOptionLugar: string;
   ciudad: string;
-  //time:string;
   //MAPA CLUSTER VISTO POR TODOS LOS METODOS DE LA CLASE
   mapClustering: any;
   markersCluster;
 
   markerListCluster;
-  markerListClusterDenso;
 
   //CHECKBOX INCIDENCIAS
   isChecked: Boolean;
@@ -74,7 +69,6 @@ export class MapaIncidenciasComponent implements AfterViewInit {
       }
   }
 
-
   ngAfterViewInit() {
 
       //Obtenemos de manera dinamica los lugares a mostrar en el input select
@@ -88,14 +82,15 @@ export class MapaIncidenciasComponent implements AfterViewInit {
           attribution: '&copy; <a href="copyright">Openstreetmap</a>'
       }).addTo(this.mapClustering);
 
-
-      
       var cont = 0;
       let firstpolyline;
       //function animate(){ INICIO DE LA PELICULA
       do {
 
           this.mapServiceU.getCallesCerradas2().subscribe((data: any) => {
+              let datos = data;
+              console.log(datos.length);
+              
               this.clearMap(this.mapClustering);
               //let markers = L.markerClusterGroup();
               //let markerList = [];    
@@ -138,17 +133,13 @@ export class MapaIncidenciasComponent implements AfterViewInit {
           });
 
           cont = cont + 1;
-          setTimeout(function f() { console.log("wait"); }, 100);
+          setTimeout(function f() { 
+            //   console.log("wait"); 
+            }, 100);
 
-      } while (cont < 1); //FIN DE LA PELICULA
-      console.log("FINISH");
+      } while (cont < 1); 
 
-      
-  }//FIN OnInit
-  
-
-
-  
+  }
 
   buscarIncidencias() {
       for (let i of this.listaIncidencias) {
@@ -156,7 +147,7 @@ export class MapaIncidenciasComponent implements AfterViewInit {
       }
       this.aux = [];
       this.contadorChecked = 0;
-      //console.log(this.selectedOptionLugar);
+    //   console.log(this.selectedOptionLugar);
       this.ciudad = this.selectedOptionLugar;
       //VALIDACION
       if (this.ciudad == null || this.time == null || <any>this.obtenerFecha == "") {
@@ -209,8 +200,6 @@ export class MapaIncidenciasComponent implements AfterViewInit {
               }
           }
 
-
-
           console.log("horario final: " + horarioFinal);
           if (this.ciudad == "Todos") { this.ciudad = ""; }
           this.mapServiceU.getTraficoCluster(horarioFinal, this.ciudad).subscribe((data: any) => {
@@ -230,9 +219,6 @@ export class MapaIncidenciasComponent implements AfterViewInit {
                   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                       attribution: '&copy; <a href="copyright">Openstreetmap</a>'
                   }).addTo(this.mapClustering);
-                  /*** */
-
-
 
                   for (let i = 0; i < data.length; i++) {
                       let marker = L.marker(L.latLng(data[i].location.y, data[i].location.x), { icon: this.Icon1 });
@@ -253,7 +239,6 @@ export class MapaIncidenciasComponent implements AfterViewInit {
           console.log((<any>this.obtenerFecha).format("YYYY-MM-DD"));
       }
   }//Fin SUBMIT
-
 
   //CHECKBOX
   filtraIncidencia(e: any) {
@@ -324,9 +309,5 @@ export class MapaIncidenciasComponent implements AfterViewInit {
               }
           }
       }
-
-
   }
-
-
 }
