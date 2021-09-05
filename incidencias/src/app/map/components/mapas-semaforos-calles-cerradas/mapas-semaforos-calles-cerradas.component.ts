@@ -18,40 +18,22 @@ export class MapasSemaforosCallesCerradasComponent implements AfterViewInit {
     time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
     mapServiceU: MapService;
     //TIMEPICKER
-    minuteStep = 5;
-    //DECLARACION DE VARIABLES QUE SE IMPLEMENTAN EN EL FORMULARIO
-    obtenerFecha: string = "";
+
     lista: string[] = [""];//agrupa todos los lugares con incidencias
-    arr: any[] = [];
-    selectedOptionLugar: string;
-    ciudad: string;
-    //time:string;
+
     //MAPA CLUSTER VISTO POR TODOS LOS METODOS DE LA CLASE
     mapClustering: any;
-    traficoDenso: any;
-    markersCluster;
-    markersClusterDenso;
-    markerListCluster;
-    markerListClusterDenso;
-    horarioTraficoDenso;
-    map;
 
     constructor(public mapService: MapService) {
         this.mapServiceU = mapService;
 
     }
 
-
-
-    
-
     ngAfterViewInit() {
 
         //Obtenemos de manera dinamica los lugares a mostrar en el input select
         this.mapServiceU.getCities().subscribe((data: any) => {
             this.lista = Object.values(data);
-            this.lista.push("Todos");
-            console.log(this.lista);
         });
 
 
@@ -102,10 +84,5 @@ export class MapasSemaforosCallesCerradasComponent implements AfterViewInit {
 
 
     }//FIN OnInit
-    
-
-
-
-
     
 }
