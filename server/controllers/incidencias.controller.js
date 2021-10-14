@@ -32,6 +32,8 @@ const semaforo = require('../models/semaforo');
 const geo = require('../models/geo');
 const chart = require('../models/chart');
 const traficodenso2 = require('../models/traficoDenso');
+const traficoDenso = require('../models/traficoDenso');
+
 const IncidenciasCtrl = {};
 
 IncidenciasCtrl.gettrafico = async(req, res) => {
@@ -146,8 +148,10 @@ IncidenciasCtrl.incidenciaTipos = async(req, res) => {
     const trafico = await incidencia.distinct('alerts.type');
     res.json(trafico);
 }
+
 IncidenciasCtrl.diaTrafico = async(req, res) => {
-    const trafico = await traficodenso2.find().sort({ 'tiempo': 1 }).limit();
+    const trafico = await traficoDenso.find( {'tiempo ': new RegExp(req.params.fecha)} ).sort({ 'tiempo ': 1 });
+    //console.log(req.params.fecha);  
     res.json(trafico);
 }
 module.exports = IncidenciasCtrl;

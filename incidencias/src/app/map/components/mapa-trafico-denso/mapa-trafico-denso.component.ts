@@ -7,6 +7,7 @@ import { FormControl,  Validators } from '@angular/forms';
 
 
 import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { data } from 'jquery';
 
 @Component({
     selector: 'app-mapa-trafico-denso',
@@ -27,9 +28,11 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
     nombrePlayPausa: string = "play_circle";
     banderaPlayPausa: boolean = true;
 
+    fechaConsulta : string = "2019-04-01";
+
     timeCtrl = new FormControl(this.horario, []);
     rangeControl = new FormControl(this.rango, [Validators.max(287), Validators.min(0)]);
-
+    dateControl = new FormControl( this.fechaConsulta, [] );
 
     @ViewChild('mapClustering', { static: true })
     mapContainer: ElementRef;
@@ -46,9 +49,16 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         this.mapServiceU = mapService;
         this.rangeControl.valueChanges.subscribe(value => {
             this.rango = value;
+            console.log(value);
+            
             // this.banderaPausa = true;
             this.ajustarlinea(this.rango);
 
+        })
+        this.dateControl.valueChanges.subscribe( value => {
+            this.fechaConsulta = value;
+            console.log(value);
+            
         })
     }
 
@@ -91,6 +101,8 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         // this.rango = this.ajustarHora(this.horario);
         this.fechaTrafico();
         // this.traficoDenso2(this.ajustarHora(this.horario));    
+        console.log(this.fechaConsulta);
+        
     }
 
     reproducir(event: Event) {
@@ -168,8 +180,9 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
                 this.banderaMapa = false;
             });
 
-            this.mapServiceU.gettraficoDenso().subscribe((dataT: any) => {
+            this.mapServiceU.gettraficoDenso( this.dateControl.value ).subscribe((dataT: any) => {
                 this.arregloTrafico = dataT;
+                
                 // alert('Llegaron los datos');
                 this.activarBtn = false;
             });
@@ -184,6 +197,10 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
     }
 
     pintarClosters(rango: number) {
+
+        console.log(this.arregloTrafico[0]["tiempo "]);
+        
+
         let markers = L.markerClusterGroup();
         let capaLineas = L.markerClusterGroup();
         let segment;
@@ -211,7 +228,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
                 that.map.removeLayer(capaLineas);
                 capaLineas = L.markerClusterGroup();
 
-                that.horarioTraficoDenso = data[tiempo].tiempo[0];
+                that.horarioTraficoDenso = data[tiempo]["tiempo "][0];
                 for (let j = 0; j < (data[tiempo].lineas.length); j++) {
                     for (let k = 0; k < (data[tiempo].lineas[j].length - 1); k++) {
                         let marker = L.marker(new L.LatLng(data[tiempo].lineas[j][k].y, data[tiempo].lineas[j][k].x), { title: "Datos Closters" });
