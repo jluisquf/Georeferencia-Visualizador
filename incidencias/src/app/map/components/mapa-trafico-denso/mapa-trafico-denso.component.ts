@@ -32,7 +32,6 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
 
     timeCtrl = new FormControl(this.horario, []);
     rangeControl = new FormControl(this.rango, [Validators.max(287), Validators.min(0)]);
-    dateControl = new FormControl( this.fechaConsulta, [] );
 
     @ViewChild('mapClustering', { static: true })
     mapContainer: ElementRef;
@@ -50,15 +49,9 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         this.rangeControl.valueChanges.subscribe(value => {
             this.rango = value;
             console.log(value);
-            
             // this.banderaPausa = true;
             this.ajustarlinea(this.rango);
 
-        })
-        this.dateControl.valueChanges.subscribe( value => {
-            this.fechaConsulta = value;
-            console.log(value);
-            
         })
     }
 
@@ -95,15 +88,13 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         }
     }
 
-    buscarFecha(event: Event) {
+    buscarFecha(event: Event, value) {
         this.banderaPausa = false;
         event.preventDefault();
-        // this.rango = this.ajustarHora(this.horario);
-        this.fechaTrafico();
-        // this.traficoDenso2(this.ajustarHora(this.horario));    
-        console.log(this.fechaConsulta);
-        
+        this.fechaConsulta = value;
+        this.fechaTrafico();       
     }
+
 
     reproducir(event: Event) {
         event.preventDefault();
@@ -180,7 +171,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
                 this.banderaMapa = false;
             });
 
-            this.mapServiceU.gettraficoDenso( this.dateControl.value ).subscribe((dataT: any) => {
+            this.mapServiceU.gettraficoDenso( this.fechaConsulta ).subscribe((dataT: any) => {
                 this.arregloTrafico = dataT;
                 
                 // alert('Llegaron los datos');
@@ -199,7 +190,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
     pintarClosters(rango: number) {
 
         console.log(this.arregloTrafico[0]["tiempo "]);
-        
+
 
         let markers = L.markerClusterGroup();
         let capaLineas = L.markerClusterGroup();
