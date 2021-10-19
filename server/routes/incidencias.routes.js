@@ -23,5 +23,11 @@ app.get('/callescerradas', incidencia.calleCerrada);
 app.get('/roadclosed', incidencia.roadClose);
 app.get('/alcaldias', incidencia.alcaldia);
 app.get('/incidencias', incidencia.incidencia);
-app.get('/traficoDenso', incidencia.diaTrafico);
+
+// ****************
+app.get('/traficoDenso/:fecha', incidencia.diaTrafico);
+
+
+
+
 module.exports = app;

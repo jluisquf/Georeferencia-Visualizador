@@ -2,8 +2,8 @@
     <h3>Trafico Denso</h3>
 
     <div class="form-group">
-        <input type="date" value="2020-01-17" class="">
-        <button class="btn btn-primary form" (click)="buscarFecha($event)">Buscar</button>
+        <input type="date" [value]="fechaConsulta" #fechaTrafico class="">
+        <button class="btn btn-primary form" (click)="buscarFecha($event, fechaTrafico.value )">Buscar</button>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="paintLine" id="paintLine"
                 (change)="pintarLineas($event)">

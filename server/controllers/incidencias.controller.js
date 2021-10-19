@@ -1,4 +1,5 @@
-var times = ["00_00", "00_05", "00_10", "00_15", "00_20", "00_25", "00_30", "00_35", "00_40", "00_45", "00_50", "00_55",
+var times = [
+    "00_00", "00_05", "00_10", "00_15", "00_20", "00_25", "00_30", "00_35", "00_40", "00_45", "00_50", "00_55",
     "01_00", "01_05", "01_10", "01_15", "01_20", "01_25", "01_30", "01_35", "01_40", "01_45", "01_50", "01_55",
     "02_00", "02_05", "02_10", "02_15", "02_20", "02_25", "02_30", "02_35", "02_40", "02_45", "02_50", "02_55",
     "03_00", "03_05", "03_10", "03_15", "03_20", "03_25", "03_30", "03_35", "03_40", "03_45", "03_50", "03_55",
@@ -31,6 +32,8 @@ const semaforo = require('../models/semaforo');
 const geo = require('../models/geo');
 const chart = require('../models/chart');
 const traficodenso2 = require('../models/traficoDenso');
+const traficoDenso = require('../models/traficoDenso');
+
 const IncidenciasCtrl = {};
 
 IncidenciasCtrl.gettrafico = async(req, res) => {
@@ -42,8 +45,6 @@ IncidenciasCtrl.gettraficoById = async(req, res) => {
     const trafico = await incidencia.findById(req.params.startTime);
     res.json(trafico);
 };
-
-
 
 
 IncidenciasCtrl.posttrafico = async(req, res) => {
@@ -147,8 +148,10 @@ IncidenciasCtrl.incidenciaTipos = async(req, res) => {
     const trafico = await incidencia.distinct('alerts.type');
     res.json(trafico);
 }
+
 IncidenciasCtrl.diaTrafico = async(req, res) => {
-    const trafico = await traficodenso2.find().sort({ 'tiempo': 1 }).limit();
+    const trafico = await traficoDenso.find( {'tiempo ': new RegExp(req.params.fecha)} ).sort({ 'tiempo ': 1 });
+    //console.log(req.params.fecha);  
     res.json(trafico);
 }
 module.exports = IncidenciasCtrl;

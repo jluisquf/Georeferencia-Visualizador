@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const EsquemaTraficoDenso = new Schema({}, { collection: 'traficodenso17' /*strict:false*/ });
-module.exports = mongoose.model('traficodenso', EsquemaTraficoDenso);
+const EsquemaTraficoDenso = new Schema({}, { collection: 'traficoDenso2019'});
+module.exports = mongoose.model('prueba', EsquemaTraficoDenso);
