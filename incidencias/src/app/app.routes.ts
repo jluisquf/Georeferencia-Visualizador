@@ -8,6 +8,7 @@ import { PageMapainComponent } from './map/pages/page-mapain/page-mapain.compone
 import { HomeComponent } from './shared/pages/home/home.component';
 import { PageMapcrUComponent } from './map/pages/page-mapcr-u/page-mapcr-u.component';
 import { PageMaptComponent } from './map/pages/page-mapt/page-mapt.component';
+import { PageMapcliComponent } from './map/pages/page-mapcli/page-mapcli.component';
 
 //arreglo de rutas 
 const APP_ROUTES:Routes=[
@@ -21,6 +22,7 @@ const APP_ROUTES:Routes=[
     {path: 'mapasemaforos',component:PageMapsComponent},
     {path: 'mapaccrepususer',component:PageMapcrUComponent},
     {path: 'mapatrafico',component:PageMaptComponent},
+    {path: 'mapaclima',component:PageMapcliComponent},
     {path: '**', pathMatch:'full', redirectTo:'home'}
    
 ];
