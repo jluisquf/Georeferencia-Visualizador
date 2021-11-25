@@ -2,9 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import { FormControl,  Validators } from '@angular/forms';
-
-
+import { FormControl, Validators } from '@angular/forms';
 
 import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { data } from 'jquery';
@@ -28,7 +26,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
     nombrePlayPausa: string = "play_circle";
     banderaPlayPausa: boolean = true;
 
-    fechaConsulta : string = "2019-04-01";
+    fechaConsulta: string = "2019-04-01";
 
     timeCtrl = new FormControl(this.horario, []);
     rangeControl = new FormControl(this.rango, [Validators.max(287), Validators.min(0)]);
@@ -92,7 +90,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         this.banderaPausa = false;
         event.preventDefault();
         this.fechaConsulta = value;
-        this.fechaTrafico();       
+        this.fechaTrafico();
     }
 
 
@@ -171,9 +169,9 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
                 this.banderaMapa = false;
             });
 
-            this.mapServiceU.gettraficoDenso( this.fechaConsulta ).subscribe((dataT: any) => {
+            this.mapServiceU.gettraficoDenso(this.fechaConsulta).subscribe((dataT: any) => {
                 this.arregloTrafico = dataT;
-                
+
                 // alert('Llegaron los datos');
                 this.activarBtn = false;
             });

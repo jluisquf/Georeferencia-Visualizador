@@ -27,6 +27,8 @@ app.get('/incidencias', incidencia.incidencia);
 // ****************
 app.get('/traficoDenso/:fecha', incidencia.diaTrafico);
 
+app.get('/clima/:fecha', incidencia.diaClima);
+
 
 
 

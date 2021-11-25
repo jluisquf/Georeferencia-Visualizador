@@ -33,6 +33,7 @@ const geo = require('../models/geo');
 const chart = require('../models/chart');
 const traficodenso2 = require('../models/traficoDenso');
 const traficoDenso = require('../models/traficoDenso');
+const clima = require('../models/clima');
 
 const IncidenciasCtrl = {};
 
@@ -153,5 +154,10 @@ IncidenciasCtrl.diaTrafico = async(req, res) => {
     const trafico = await traficoDenso.find( {'tiempo ': new RegExp(req.params.fecha)} ).sort({ 'tiempo ': 1 });
     //console.log(req.params.fecha);  
     res.json(trafico);
+}
+
+IncidenciasCtrl.diaClima = async(req, res) => {
+    const datosClima = await clima.find({'fecha': new RegExp(req.params.fecha)}).sort({'fecha': 1});
+    res.json(datosClima);
 }
 module.exports = IncidenciasCtrl;
