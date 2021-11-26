@@ -59,7 +59,6 @@ export class MapaclimaComponent implements AfterViewInit {
             id: 'mapbox/streets-v11'
         }).addTo(this.map);
 
-        
 
         this.mapServiceU.getclima('2021-10-10').subscribe((data: any) => {
             this.listaClima = Object.values(data);
