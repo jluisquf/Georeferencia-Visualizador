@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { FormControl, Validators } from '@angular/forms';
 
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,6 +12,17 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./mapaclima.component.css']
 })
 export class MapaclimaComponent implements AfterViewInit {
+
+    //Variables
+    fechaConsulta: string = "2021-10-01";
+    banderaPausa: boolean = false;
+    banderaMapa: boolean = true;
+
+    horarioTraficoDenso;
+    map;
+    arregloTrafico: any[];
+    activarBtn = true;
+    paintLine: boolean = false;
 
     @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
     time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
@@ -35,65 +47,88 @@ export class MapaclimaComponent implements AfterViewInit {
             this.lista = Object.values(data);
         });
 
-        this.mapServiceU.getclima('2021-10-23').subscribe((data: any) => {
-            this.listaClima = Object.values(data);
-            console.log(this.listaClima[0]);
-            let tamSecciones = this.listaClima[0]["clima"].length;
-
-            let marker;
-            for (let i = 0; i < tamSecciones; i++) {
-                let temperaturaSeccion = JSON.stringify(data[0]['clima'][i].datos.main.temp)
-                marker = L.marker([data[0]['clima'][i].latitud, data[0]['clima'][i].longitud], { icon: Icon }).addTo(mymap).bindPopup("°C: " + temperaturaSeccion);
-                console.log(marker);
-            }
-        });
-
-
-        var mymap = L.map('mapid').setView([19.37596, -99.07000], 12);
-
-
+        this.map = L.map('mapid').setView([19.37596, -99.07000], 11);
+        //Fondo de trafico denso
 
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
+            minZoom: 10,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox/streets-v11'
-        }).addTo(mymap);
+        }).addTo(this.map);
 
 
+        this.mapServiceU.getclima('2021-10-10').subscribe((data: any) => {
+            this.listaClima = Object.values(data);
+            //console.log(this.listaClima[0]);
+            let tamSecciones = this.listaClima[0]["clima"].length;
 
-        //function animate(){ INICIO DE LA PELICULA
+            let marker;
+            for (let i = 0; i < tamSecciones; i++) {
+                let temperaturaSeccion = Number(JSON.stringify(data[0]['clima'][i].datos.main.temp))
+                let nombreSeccion = data[0]['clima'][i].datos.name;
+                let latitud = data[0]['clima'][i].latitud;
+                let longitud = data[0]['clima'][i].longitud;
 
-        let Icon = L.icon({
-            iconUrl: '../.././assets/termometro.png',
-            iconSize: [32, 32],
-            iconAnchor: [32, 32],
+                if (temperaturaSeccion > 15) {
+                    marker = L.marker([latitud, longitud], { icon: IconCaliente }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);
+                }  else {
+                    marker = L.marker([latitud, longitud], { icon: IconFrio }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);
+                }
+
+            }
+        });
+
+        let IconFrio = L.icon({
+            iconUrl: '../.././assets/frio.png',
+            iconSize: [30, 30],
+            iconAnchor: [30, 30],
             popupAnchor: [-15, -35]
         });
 
-        // this.mapServiceU.getSemaforoizt().subscribe((data: any) => {
-        //     let marker;
-        //     for (let i = 0; i < data.semaforo.length; i++) {
-        //         marker = L.marker([data.semaforo[i].latitud, data.semaforo[i].longitud], { icon: Icon }).addTo(mymap).bindPopup("Hola.");
-        //     }
-        // });
+        let IconCaliente = L.icon({
+            iconUrl: '../.././assets/calor.png',
+            iconSize: [30, 30],
+            iconAnchor: [30, 30],
+            popupAnchor: [-15, -35]
+        });
 
-        // this.mapServiceU.getSemaforoizc().subscribe((data: any) => {
-        //     let marker;
-        //     for (let i = 0; i < data.semaforo.length; i++) {
-        //         marker = L.marker([data.semaforo[i].latitud, data.semaforo[i].longitud], { icon: Icon }).addTo(mymap).bindPopup("Hola2");
-        //     }
-        // });
-
-        // this.mapServiceU.getSemaforomh().subscribe((data: any) => {
-        //     let marker;
-        //     for (let i = 0; i < data.semaforo.length; i++) {
-        //         marker = L.marker([data.semaforo[i].latitud, data.semaforo[i].longitud], { icon: Icon }).addTo(mymap).bindPopup("Hola3");
-        //     }
-        // });
-
+        
 
     }//FIN OnInit
+
+    buscarFecha(event: Event, value) {
+        this.banderaPausa = false;
+        event.preventDefault();
+        this.fechaConsulta = value;
+        console.log(this.fechaConsulta);
+        //this.fechaTrafico();
+    }
+
+    // fechaTrafico() {
+    //     let horario
+    //     this.horarioTraficoDenso = horario;
+    //     let that = this;
+
+    //     if (this.banderaMapa) {
+    //         this.mapServiceU.getAlcaldias().subscribe((data: any) => {
+    //             L.geoJSON(data[0]).addTo(that.map);
+    //             this.banderaMapa = false;
+    //         });
+    //     }
+
+    // }
+
+    pintarLineas(event: Event) {
+        if (this.paintLine) {
+            this.paintLine = false;
+        } else {
+            this.paintLine = true;
+        }
+    }
+
+    //function animate(){ INICIO DE LA PELICULA
 
 }

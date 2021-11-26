@@ -90,6 +90,7 @@ export class MapaTraficoDensoComponent implements AfterViewInit {
         this.banderaPausa = false;
         event.preventDefault();
         this.fechaConsulta = value;
+        console.log(this.fechaConsulta);
         this.fechaTrafico();
     }
 
