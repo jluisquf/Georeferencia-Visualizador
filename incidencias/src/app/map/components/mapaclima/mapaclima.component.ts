@@ -17,12 +17,25 @@ export class MapaclimaComponent implements AfterViewInit {
     fechaConsulta: string = "2021-10-01";
     banderaPausa: boolean = false;
     banderaMapa: boolean = true;
-
-    horarioTraficoDenso;
-    map;
-    arregloTrafico: any[];
+    map: any;
     activarBtn = true;
     paintLine: boolean = false;
+    mapMarkers: any[];
+
+    //Iconos
+    IconFrio = L.icon({
+        iconUrl: '../.././assets/frio.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+
+    IconCaliente = L.icon({
+        iconUrl: '../.././assets/calor.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
 
     @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
     time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
@@ -60,11 +73,29 @@ export class MapaclimaComponent implements AfterViewInit {
         }).addTo(this.map);
 
 
-        this.mapServiceU.getclima('2021-10-10').subscribe((data: any) => {
+        //Aqui antes estaban los iconos
+            
+    }//FIN OnInit
+
+    buscarFecha(event: Event, value) {
+        this.banderaPausa = false;
+        event.preventDefault();
+        this.fechaConsulta = value;
+        console.log(this.fechaConsulta);
+        //this.map.clearLayers()
+        this.pintarTermometros(this.fechaConsulta);
+        this.fechaTraficoLineas();
+    }
+
+    pintarTermometros(fecha){
+        
+
+        let fechaTermos = fecha;
+        this.mapServiceU.getclima(fechaTermos).subscribe((data: any) => {
             this.listaClima = Object.values(data);
             //console.log(this.listaClima[0]);
             let tamSecciones = this.listaClima[0]["clima"].length;
-
+            
             let marker;
             for (let i = 0; i < tamSecciones; i++) {
                 let temperaturaSeccion = Number(JSON.stringify(data[0]['clima'][i].datos.main.temp))
@@ -73,53 +104,28 @@ export class MapaclimaComponent implements AfterViewInit {
                 let longitud = data[0]['clima'][i].longitud;
 
                 if (temperaturaSeccion > 15) {
-                    marker = L.marker([latitud, longitud], { icon: IconCaliente }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);
+                    marker = L.marker([latitud, longitud], { icon: this.IconCaliente }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                   
                 }  else {
-                    marker = L.marker([latitud, longitud], { icon: IconFrio }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);
+                    marker = L.marker([latitud, longitud], { icon: this.IconFrio }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                  
                 }
 
             }
         });
 
-        let IconFrio = L.icon({
-            iconUrl: '../.././assets/frio.png',
-            iconSize: [30, 30],
-            iconAnchor: [30, 30],
-            popupAnchor: [-15, -35]
-        });
-
-        let IconCaliente = L.icon({
-            iconUrl: '../.././assets/calor.png',
-            iconSize: [30, 30],
-            iconAnchor: [30, 30],
-            popupAnchor: [-15, -35]
-        });
-
-        
-
-    }//FIN OnInit
-
-    buscarFecha(event: Event, value) {
-        this.banderaPausa = false;
-        event.preventDefault();
-        this.fechaConsulta = value;
-        console.log(this.fechaConsulta);
-        //this.fechaTrafico();
     }
 
-    // fechaTrafico() {
-    //     let horario
-    //     this.horarioTraficoDenso = horario;
-    //     let that = this;
+    fechaTraficoLineas() {
+        let that = this;
 
-    //     if (this.banderaMapa) {
-    //         this.mapServiceU.getAlcaldias().subscribe((data: any) => {
-    //             L.geoJSON(data[0]).addTo(that.map);
-    //             this.banderaMapa = false;
-    //         });
-    //     }
+        if (this.banderaMapa) {
+            this.mapServiceU.getAlcaldias().subscribe((data: any) => {
+                L.geoJSON(data[0]).addTo(that.map);
+                this.banderaMapa = false;
+            });
+        }
 
-    // }
+    }
+
 
     pintarLineas(event: Event) {
         if (this.paintLine) {
