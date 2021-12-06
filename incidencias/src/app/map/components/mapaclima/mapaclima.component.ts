@@ -21,6 +21,7 @@ export class MapaclimaComponent implements AfterViewInit {
     activarBtn = true;
     paintLine: boolean = false;
     mapMarkers: any[];
+    hora : '06:00';
 
     //Iconos
     IconFrio = L.icon({
@@ -83,14 +84,16 @@ export class MapaclimaComponent implements AfterViewInit {
         this.fechaConsulta = value;
         console.log(this.fechaConsulta);
         //this.map.clearLayers()
-        this.pintarTermometros(this.fechaConsulta);
+
+        this.pintarTermometros(this.fechaConsulta, this.hora);
         this.fechaTraficoLineas();
     }
 
-    pintarTermometros(fecha){
+    pintarTermometros(fecha,hora){
         
 
         let fechaTermos = fecha;
+        let horaTermos = hora;
         this.mapServiceU.getclima(fechaTermos).subscribe((data: any) => {
             this.listaClima = Object.values(data);
             //console.log(this.listaClima[0]);
@@ -135,6 +138,73 @@ export class MapaclimaComponent implements AfterViewInit {
         }
     }
 
-    //function animate(){ INICIO DE LA PELICULA
+    /*
+    pintarTermometros(fecha,rango: number) {
 
+        console.log(this.arregloTrafico[0]["tiempo "]);
+
+
+        let markers = L.markerClusterGroup();
+        let capaLineas = L.markerClusterGroup();
+        let segment;
+        let tiempo = rango;
+        let data = this.arregloTrafico;
+        let that = this;
+        let pausa: boolean;
+
+        function animacion() {
+            // console.log('El tiempo es:' + tiempo);
+            pausa = that.banderaPausa
+            that.rango = tiempo;
+            that.ajustarlinea(tiempo);
+
+            capaLineas.clearLayers();
+            that.map.removeLayer(capaLineas);
+
+            markers.clearLayers();
+            that.map.removeLayer(markers);
+
+            if (data.length) {
+                that.map.removeLayer(markers);
+                markers = L.markerClusterGroup();
+
+                that.map.removeLayer(capaLineas);
+                capaLineas = L.markerClusterGroup();
+
+                that.horarioTraficoDenso = data[tiempo]["tiempo "][0];
+                for (let j = 0; j < (data[tiempo].lineas.length); j++) {
+                    for (let k = 0; k < (data[tiempo].lineas[j].length - 1); k++) {
+                        let marker = L.marker(new L.LatLng(data[tiempo].lineas[j][k].y, data[tiempo].lineas[j][k].x), { title: "Datos Closters" });
+                        markers.addLayer(marker);
+                        let pointA = new L.LatLng(data[tiempo].lineas[j][k].y, data[tiempo].lineas[j][k].x);
+                        let pointB = new L.LatLng(data[tiempo].lineas[j][k + 1].y, data[tiempo].lineas[j][k + 1].x);
+                        let pointList = [pointA, pointB];
+                        //console.log(data[tiempo].lineas[j][k+1].y );//lineas[12]
+                        segment = new L.Polyline(pointList,
+                            {
+                                color: '#DB3A34',
+                                weight: 6,
+                                opacity: 0.5,
+                                smoothFactor: 1
+                            });
+                        segment.addTo(capaLineas);//aggrega al mapa
+                    }//fin for k
+                }
+                if (that.paintLine) {
+                    that.map.addLayer(capaLineas);
+                }
+
+                that.marcas = markers;
+                that.marcasLineas = capaLineas;
+                tiempo++;
+                that.map.addLayer(markers);
+                if (tiempo < data.length && pausa == false) {
+                    setTimeout(animacion, 2000);
+                }
+            }
+        }
+        animacion();
+
+    }
+    */
 }
