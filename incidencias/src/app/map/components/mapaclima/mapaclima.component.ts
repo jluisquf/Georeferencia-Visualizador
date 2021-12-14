@@ -47,6 +47,13 @@ export class MapaclimaComponent implements AfterViewInit {
         popupAnchor: [-15, -35]
     });
 
+    IconMedio= L.icon({
+        iconUrl: '../.././assets/medio.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+
     @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
     time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
     mapServiceU: MapService;
@@ -136,7 +143,6 @@ export class MapaclimaComponent implements AfterViewInit {
             this.nombrePlayPausa = 'play_circle';
             this.banderaPlayPausa = true;
         }
-        // this.reprodurtor(this.rango);  
     }
 
     ajustarlinea(rango: number) {
@@ -166,14 +172,18 @@ export class MapaclimaComponent implements AfterViewInit {
                 let latitud = data[0]['clima'][i].latitud;
                 let longitud = data[0]['clima'][i].longitud;
 
-                if (temperaturaSeccion > 15) {
+                if (temperaturaSeccion > 20) {
                     marker = new L.marker([latitud, longitud], { icon: this.IconCaliente }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);    
                     this.markers.push(marker);               
-                }  else {
+                } else {
+                    if (temperaturaSeccion > 13) {
+                        marker = new L.marker([latitud, longitud], { icon: this.IconMedio }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                  
+                        this.markers.push(marker);
+                    }else{ 
                     marker = new L.marker([latitud, longitud], { icon: this.IconFrio }).addTo(this.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                  
-                   this.markers.push(marker);
-                   
-                }
+                    this.markers.push(marker);
+                    }
+                }  
                 
             }
         });
@@ -188,37 +198,44 @@ export class MapaclimaComponent implements AfterViewInit {
         
         this.markers = [];
     }
+    
     empezar(){
         let datos = this.num;
         let data = this.listaClima;
         let hora_minuto= this.rango;
         let that = this;
         function animacionTermometros(){
-                that.limpiar();
-                let marker;
-                let pausa = that.banderaPausa;
-                that.ajustarlinea(hora_minuto);
-                for (let i = 0; i < (data[0]["clima"].length); i++) {
-                    let temperaturaSeccion = Number(JSON.stringify(data[hora_minuto]['clima'][i].datos.main.temp))
-                    let nombreSeccion = data[hora_minuto]['clima'][i].datos.name;
-                    let latitud = data[hora_minuto]['clima'][i].latitud;
-                    let longitud = data[hora_minuto]['clima'][i].longitud;
-    
-                    if (temperaturaSeccion > 15) {
-                        marker = new L.marker([latitud, longitud], { icon: that.IconCaliente }).addTo(that.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);    
-                        that.markers.push(marker);               
-                    }  else {
+            that.limpiar();
+            let marker;
+            let pausa = that.banderaPausa;
+            that.ajustarlinea(hora_minuto);
+            for (let i = 0; i < (data[0]["clima"].length); i++) {
+                let temperaturaSeccion = Number(JSON.stringify(data[hora_minuto]['clima'][i].datos.main.temp))
+                let nombreSeccion = data[hora_minuto]['clima'][i].datos.name;
+                let latitud = data[hora_minuto]['clima'][i].latitud;
+                let longitud = data[hora_minuto]['clima'][i].longitud;
+
+                if (temperaturaSeccion > 18) {
+                    marker = new L.marker([latitud, longitud], { icon: that.IconCaliente }).addTo(that.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);    
+                    that.markers.push(marker);               
+                }  else {
+                    if(temperaturaSeccion < 10){
                         marker = new L.marker([latitud, longitud], { icon: that.IconFrio }).addTo(that.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                  
-                       // console.log(marker);
-                       that.markers.push(marker);
-                       
+                        that.markers.push(marker);
+                    }else{
+                        marker = new L.marker([latitud, longitud], { icon: that.IconMedio }).addTo(that.map).bindPopup(nombreSeccion + " °C: " + temperaturaSeccion);                  
+                        that.markers.push(marker);
                     }
-                    
+
+                   
                 }
-                hora_minuto++;
-                if (hora_minuto < datos && pausa == false) {
-                    setTimeout(animacionTermometros, 3000);
-                }
+                
+
+            }
+            hora_minuto++;
+            if (hora_minuto < datos && pausa == false) {
+                setTimeout(animacionTermometros, 1000);
+            }
         }
         animacionTermometros();
     }
