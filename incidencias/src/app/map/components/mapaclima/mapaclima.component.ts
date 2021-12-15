@@ -170,6 +170,7 @@ export class MapaclimaComponent implements AfterViewInit {
             this.listaClima = Object.values(data);
             this.num= this.listaClima.length;
             
+            
             this.tamSecciones = this.listaClima[0]["clima"].length;
             
             let marker;
