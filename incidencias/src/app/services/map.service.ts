@@ -5,7 +5,8 @@ import { HttpClient } from "@angular/common/http";//para comunicar con nuestra A
   providedIn: 'root'
 })
 export class MapService {
-  readonly URL_API= 'http://localhost:3000';
+  // readonly URL_API= 'http://localhost:3000';
+  readonly URL_API= 'http://palancar.izt.uam.mx:4005';
 
   constructor(private http:HttpClient) { }
 
@@ -19,6 +20,7 @@ export class MapService {
     console.log(this.URL_API +'/trafico/jams/'+date+'/'+city);
     return this.http.get(this.URL_API +'/trafico/jams/'+date+'/'+city);
   }
+
   /*getTraficoClusterAll(date:any){
     return this.http.get(this.URL_API +'/trafico/jams/'+date);
   }*/
