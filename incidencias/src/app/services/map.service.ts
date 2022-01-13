@@ -56,7 +56,8 @@ export class MapService {
   }
 
   getclima( fecha : string ){
-    return this.http.get(this.URL_API+'/clima/'+fecha);
-    // return this.http.get('http://palancar.izt.uam.mx:4005/clima/');
+    return this.http.get(this.URL_API+'/clima2021/'+fecha);
+    //return this.http.get('http://palancar.izt.uam.mx:4005/clima/');
   }
+  
 }

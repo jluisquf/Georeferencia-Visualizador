@@ -132,6 +132,7 @@ export class MapaclimaComponent implements AfterViewInit {
         this.banderaPlayPausa = true;
         this.pintarTermometros(this.fechaConsulta);
         this.fechaTraficoLineas();
+
         this.horario =  "00:00";
     }
 
@@ -166,13 +167,12 @@ export class MapaclimaComponent implements AfterViewInit {
         
         let fechaTermos = fecha;
         this.limpiar;
+
         this.mapServiceU.getclima(fechaTermos).subscribe((data: any) => {
             this.listaClima = Object.values(data);
             this.num= this.listaClima.length;
             
-            
             this.tamSecciones = this.listaClima[0]["clima"].length;
-            
             let marker;
             for (let i = 0; i < this.tamSecciones; i++) {
                 let temperaturaSeccion = Number(JSON.stringify(data[0]['clima'][i].datos.main.temp))
