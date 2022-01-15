@@ -16,6 +16,8 @@ import { MapaCallesReportadasUsuariosComponent } from './components/mapa-calles-
 import { PageMaptComponent } from './pages/page-mapt/page-mapt.component';
 import { MapaclimaComponent } from './components/mapaclima/mapaclima.component';
 import { PageMapcliComponent } from './pages/page-mapcli/page-mapcli.component';
+import { MapaTraficoClimaComponent } from './components/mapa-trafico-clima/mapa-trafico-clima.component';
+import { PageMaptrafyclimComponent } from './pages/page-maptrafyclim/page-maptrafyclim.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { PageMapcliComponent } from './pages/page-mapcli/page-mapcli.component';
     MapaCallesReportadasUsuariosComponent, 
     PageMaptComponent, 
     MapaclimaComponent, 
-    PageMapcliComponent,
+    PageMapcliComponent, 
+    MapaTraficoClimaComponent,
+    PageMaptrafyclimComponent, 
     
   ],
   imports: [

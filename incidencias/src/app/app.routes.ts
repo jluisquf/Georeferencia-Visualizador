@@ -9,6 +9,7 @@ import { HomeComponent } from './shared/pages/home/home.component';
 import { PageMapcrUComponent } from './map/pages/page-mapcr-u/page-mapcr-u.component';
 import { PageMaptComponent } from './map/pages/page-mapt/page-mapt.component';
 import { PageMapcliComponent } from './map/pages/page-mapcli/page-mapcli.component';
+import { PageMaptrafyclimComponent } from './map/pages/page-maptrafyclim/page-maptrafyclim.component';
 
 //arreglo de rutas 
 const APP_ROUTES:Routes=[
@@ -23,7 +24,8 @@ const APP_ROUTES:Routes=[
     {path: 'mapaccrepususer',component:PageMapcrUComponent},
     {path: 'mapatrafico',component:PageMaptComponent},
     {path: 'mapaclima',component:PageMapcliComponent},
+    {path: 'mapatraficoyclima',component:PageMaptrafyclimComponent},
     {path: '**', pathMatch:'full', redirectTo:'home'}
-   
+
 ];
 export const APP_ROUTING=RouterModule.forRoot(APP_ROUTES, {useHash:true});
