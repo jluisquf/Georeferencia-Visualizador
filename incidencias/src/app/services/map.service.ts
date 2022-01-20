@@ -51,7 +51,7 @@ export class MapService {
     return this.http.get(this.URL_API+'/incidencias');
   }
   gettraficoDenso( fecha : string ){
-    return this.http.get(this.URL_API+'/traficoDenso/'+fecha);
+    return this.http.get(this.URL_API+'/traficoDenso2021/'+fecha);
     // return this.http.get('http://palancar.izt.uam.mx:4005/traficoDenso/');
   }
 

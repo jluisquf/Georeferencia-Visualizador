@@ -125,7 +125,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
     }
 
     fechaTrafico(fecha) {
-        this.fechatraf="2019-04-01";
+        this.fechatraf="2021-02-02";
         let tiempo = this.rango;
 
         if (this.banderaMapa) {
