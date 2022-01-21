@@ -2,3 +2,5 @@
 /node_modules
 package-lock.json
 package.json
+incidencias/package-lock.json
+incidencias/package.json
