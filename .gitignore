@@ -1,4 +1,10 @@
 # dependencies
 /node_modules
+/febrero
+/errores
+/salida
+extractorLineas.js
+febrero2021trafico.tar.gz
 package-lock.json
 package.json
+febreroTraficoDenso2021.json
