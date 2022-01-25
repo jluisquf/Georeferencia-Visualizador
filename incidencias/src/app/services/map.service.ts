@@ -51,13 +51,18 @@ export class MapService {
     return this.http.get(this.URL_API+'/incidencias');
   }
   gettraficoDenso( fecha : string ){
-    return this.http.get(this.URL_API+'/traficoDenso2021/'+fecha);
+    if(fecha.substring(0,4) == "2021")
+      return this.http.get(this.URL_API+'/traficoDenso2021/'+fecha);
     // return this.http.get('http://palancar.izt.uam.mx:4005/traficoDenso/');
+    //return this.http.get(this.URL_API+'/traficoDenso2020/'+fecha));
   }
 
   getclima( fecha : string ){
-    return this.http.get(this.URL_API+'/clima2021/'+fecha);
-    //return this.http.get('http://palancar.izt.uam.mx:4005/clima/');
+    if(fecha.substring(0,4) == "2021")
+      return this.http.get(this.URL_API+'/clima2021/'+fecha);
+      //return this.http.get('http://palancar.izt.uam.mx:4005/clima/');
+
+    //return this.http.get(this.URL_API+'/clima2020/'+fecha);
   }
   
 }
