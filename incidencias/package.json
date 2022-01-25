@@ -26,7 +26,7 @@
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@popperjs/core": "^2.8.4",
     "@sweetalert2/ngx-sweetalert2": "^8.1.1",
-    "@types/jquery": "^3.5.1",
+    "@types/jquery": "^3.5.10",
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "jquery": "^3.5.1",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1001.7",
-    "@angular/cli": "^10.1.7",
+    "@angular/cli": "^10.2.4",
     "@angular/compiler-cli": "^10.1.6",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
