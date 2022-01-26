@@ -22,7 +22,8 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
     activarBtn = true;
     paintLine: boolean = false;
     mapMarkers: any[];
-    rango: number = 0;
+    rangoT: number = 0;
+    rangoC: number = 0;
     arregloTrafico: any[];
     nombrePlayPausa: string = "play_circle";
     banderaPlayPausa: boolean = true;
@@ -31,13 +32,16 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
     tamSecciones: number = 0;
     tamTrafico: number = 0;
     num:number;
+    marcas: any;
+    marcasLineas: any;
     fechatraf;
     horas: string[] = ["00:00", "00:10", "00:20", "00:30", "00:40", "00:50", "01:00", "01:10", "01:20", "01:30", "01:40", "01:50", "02:00", "02:10", "02:20", "02:30", "02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30", "08:40", "08:50", "09:00", "09:10", "09:20", "09:30", "09:40", "09:50", "10:00", "10:10", "10:20", "10:30", "10:40", "10:50", "11:00", "11:10", "11:20", "11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30", "12:40", "12:50", "13:00", "13:10", "13:20", "13:30", "13:40", "13:50", "14:00", "14:10", "14:20", "14:30", "14:40", "14:50", "15:00", "15:10", "15:20", "15:30", "15:40", "15:50", "16:00", "16:10", "16:20", "16:30", "16:40", "16:50", "17:00", "17:10", "17:20", "17:30", "17:40", "17:50", "18:00", "18:10", "18:20", "18:30", "18:40", "18:50", "19:00", "19:10", "19:20", "19:30", "19:40", "19:50", "20:00", "20:10", "20:20", "20:30", "20:40", "20:50", "21:00", "21:10", "21:20", "21:30", "21:40", "21:50", "22:00", "22:10", "22:20", "22:30", "22:40", "22:50", "23:00", "23:10", "23:20", "23:30", "23:40", "23:50"]
-    marcasLineas: any;
+        
 
     timeCtrl = new FormControl(this.horario, []);
-    rangeControl = new FormControl(this.rango, [Validators.max(143), Validators.min(0)]);
-
+    rangeControlT = new FormControl(this.rangoT, [Validators.max(143), Validators.min(0)]);
+    rangeControlC = new FormControl(this.rangoC, [Validators.max(143), Validators.min(0)]);
+    
     //Iconos
     IconFrio = L.icon({
         iconUrl: '../.././assets/frio.png', 
@@ -70,18 +74,27 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
 
     //MAPA CLUSTER VISTO POR TODOS LOS METODOS DE LA CLASE
     mapClustering: any;
+    
 
     constructor(public mapService: MapService) {
         this.mapServiceU = mapService;
-        this.rangeControl.valueChanges.subscribe(value => {
-            this.rango = value;
+        this.rangeControlT.valueChanges.subscribe(value => {
+            this.rangoT = value;
             console.log(value);
             // this.banderaPausa = true;
-            this.ajustarlinea(this.rango);
+            this.ajustarlinea(this.rangoT);
+        })
+
+        this.rangeControlC.valueChanges.subscribe(value => {
+            this.rangoC = value;
+            console.log(value);
+            // this.banderaPausa = true;
+            this.ajustarlinea(this.rangoC);
         })
 
     }
 
+ 
     ngAfterViewInit() {
 
         //Obtenemos de manera dinamica los lugares a mostrar en el input select
@@ -92,31 +105,28 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         this.map = L.map('mapid').setView([19.37596, -99.07000], 11);
         //Fondo de trafico denso
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            minZoom: 10,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox/streets-v11'
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="copyright">Openstreetmap</a>'
         }).addTo(this.map);
     }//FIN OnInit
 
     controlAtras(event: Event) {
-        if (this.rango > 0) {
-            this.rango -= 1;;
-            this.ajustarlinea(this.rango);
+        if (this.rangoC > 0) {
+            this.rangoC -= 1;;
+            this.ajustarlinea(this.rangoC);
              //that.ajustarTiempo(this.rango)
-            event.preventDefault();       
+            event.preventDefault();      
+            this.empezar(); 
         }
     }
 
     controlAdelante(event: Event) {
-        if (this.rango < 143) {
-            this.rango += 1;;
-            this.ajustarlinea(this.rango);
+        if (this.rangoC < 143) {
+            this.rangoC += 1;;
+            this.ajustarlinea(this.rangoC);
             //that.ajustarTiempo(this.rango)
-            event.preventDefault();    
+            event.preventDefault();  
+            this.empezar();  
         }
     }
 
@@ -125,39 +135,12 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         event.preventDefault();
         this.fechaConsulta = value;
         console.log(this.fechaConsulta);
-        this.rango = 0;
-        this.pintarTermometros(this.fechaConsulta);
-        this.fechaTraficoLineas();        
-    }
-
-    reproducir(event: Event) {
-        event.preventDefault();
-        if (this.banderaPlayPausa) {
-            if (this.banderaPausa) {
-                //this.borrarClosters();
-
-            }
-            this.banderaPausa = false;
-            this.empezar();
-            this.nombrePlayPausa = 'pause';
-            this.banderaPlayPausa = false;
-        } else {
-            this.banderaPausa = true; 
-            this.nombrePlayPausa = 'play_circle';
-            this.empezar();
-            this.banderaPlayPausa = true;
-        }
+        this.fechaTrafico(this.fechaConsulta);
+        this.fechaClima(this.fechaConsulta);
+        this.fechaTraficoLineas();
     }
 
     ajustarlinea(rango: number) {
-        for (let w = 0; w < 143; w++) {
-            if (w == rango) {
-                this.horario = this.horas[w];
-            }
-        }
-    }
-
-    ajustarTiempo(rango: number) {
         for (let w = 0; w < 143; w++) {
             if (this.listaClima[rango]["hora"] == this.horas[w]) {
                 this.horario = this.horas[w];
@@ -165,8 +148,27 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         }
     }
 
-    pintarTermometros(fecha){
-        
+    fechaTrafico(fecha) {
+        this.fechatraf="2021-02-02";
+        let tiempo = this.rangoC;
+
+        if (this.banderaMapa) {
+            this.mapServiceU.getAlcaldias().subscribe((data: any) => {
+                L.geoJSON(data[0]).addTo(this.map);
+                this.banderaMapa = false;
+            });
+
+            this.mapServiceU.gettraficoDenso(this.fechatraf).subscribe((data: any) => {
+                this.arregloTrafico =data;
+                //this.tamTrafico = this.arregloTrafico[tiempo]["tiempo "][0];
+                console.log("fechaTrafico");
+                console.log(this.arregloTrafico);
+                this.activarBtn = false;
+            });
+        }
+    }
+
+    fechaClima(fecha) {
         let fechaTermos = fecha;
         this.limpiar;
 
@@ -176,7 +178,6 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
 
             if(this.num != 0){
                 this.tamSecciones = this.listaClima[0]["clima"].length;
-                //this.ajustarTiempo()
                 console.log(this.num)
                 let marker;
                 for (let i = 0; i < this.tamSecciones; i++) {
@@ -199,7 +200,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
                     }  
                     
                 }
-                this.rango += 1;
+                this.rangoC += 1;
                 this.activarBtn = false;
             }else
                 alert("Lo sentimos, este día no esta registrado");
@@ -212,11 +213,11 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         }     
         this.markers = [];
     }
-    
+
     empezar(){
         let datos = this.num;
         let data = this.listaClima;
-        let hora_minuto= this.rango;
+        let hora_minuto= this.rangoC;
         let that = this;
 
         function animacionTermometros(){
@@ -224,7 +225,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
             let marker;
             let pausa = that.banderaPausa;
             that.ajustarlinea(hora_minuto);
-            //that.ajustarTiempo(hora_minuto)
+
             for (let i = 0; i < (data[0]["clima"].length); i++) {
                 let temperaturaSeccion = Number(JSON.stringify(data[hora_minuto]['clima'][i].datos.main.temp))
                 let nombreSeccion = data[hora_minuto]['clima'][i].datos.name;
@@ -246,13 +247,130 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
             }
             hora_minuto++;
             if (hora_minuto < datos && pausa == false) {
-                
-                setTimeout(animacionTermometros, 3000);
+                that.rangoC++;
+                setTimeout(animacionTermometros, 2000);
             }
         }
         animacionTermometros();
     }
-    
+
+    clearMap(m: any) {
+        for (let i in m._layers) {
+            if (m._layers[i]._path != undefined) {
+                try {
+                    m.removeLayer(m._layers[i]);
+                } catch (e) {
+                    // console.log("problem with " + e + m._layers[i]);
+                }
+            }
+        }
+    }
+
+    pintarLineas(event: Event) {
+        if (this.paintLine) {
+            this.paintLine = false;
+        } else {
+            this.paintLine = true;
+        }
+    }
+
+    reproducir(event: Event) {
+        event.preventDefault();
+        if (this.banderaPlayPausa) {
+            if (this.banderaPausa) {
+                this.borrarClosters();
+            }
+            this.banderaPausa = false;
+            //Pintar ambos comparando check o radiobutton
+            this.pintarClosters(this.rangoC);
+            this.empezar();
+            //otro pintar clima
+            //this.empezar();
+
+            //otro pintar trafico
+            // this.pintarClosters(this.rangoC);
+
+            this.nombrePlayPausa = 'pause';
+            this.banderaPlayPausa = false;
+        } else {
+            this.banderaPausa = true;
+            this.nombrePlayPausa = 'play_circle';
+            this.banderaPlayPausa = true;
+        }
+        // this.reprodurtor(this.rango); 
+    }
+    borrarClosters() {
+        this.map.removeLayer(this.marcas);
+        this.map.removeLayer(this.marcasLineas);
+    }
+
+    pintarClosters(rango: number) {
+
+        console.log(this.arregloTrafico[0]["tiempo "]);
+
+        let markers = L.markerClusterGroup();
+        let capaLineas = L.markerClusterGroup();
+        let segment;
+        let tiempo = rango;
+        let data = this.arregloTrafico;
+        let that = this;
+        let pausa: boolean;
+
+        function animacion() {
+            // console.log('El tiempo es:' + tiempo);
+            pausa = that.banderaPausa
+            that.rangoC = tiempo;
+            that.ajustarlinea(tiempo);
+
+            capaLineas.clearLayers();
+            that.map.removeLayer(capaLineas);
+
+            markers.clearLayers();
+            that.map.removeLayer(markers);
+
+            if (data.length) {
+                that.map.removeLayer(markers);
+                markers = L.markerClusterGroup();
+
+                that.map.removeLayer(capaLineas);
+                capaLineas = L.markerClusterGroup();
+
+                that.horarioTraficoDenso = data[tiempo]["tiempo "][0];
+                for (let j = 0; j < (data[tiempo].lineas.length); j++) {
+                    for (let k = 0; k < (data[tiempo].lineas[j].length - 1); k++) {
+                        let marker = L.marker(new L.LatLng(data[tiempo].lineas[j][k].y, data[tiempo].lineas[j][k].x), { title: "Datos Closters" });
+                        markers.addLayer(marker);
+                        let pointA = new L.LatLng(data[tiempo].lineas[j][k].y, data[tiempo].lineas[j][k].x);
+                        let pointB = new L.LatLng(data[tiempo].lineas[j][k + 1].y, data[tiempo].lineas[j][k + 1].x);
+                        let pointList = [pointA, pointB];
+                        //console.log(data[tiempo].lineas[j][k+1].y );//lineas[12]
+                        segment = new L.Polyline(pointList,
+                            {
+                                color: '#DB3A34',
+                                weight: 6,
+                                opacity: 0.5,
+                                smoothFactor: 1
+                            });
+                        segment.addTo(capaLineas);//aggrega al mapa
+                    }//fin for k
+                }
+               
+                    that.map.addLayer(capaLineas);
+                
+
+                that.marcas = markers;
+                that.marcasLineas = capaLineas;
+                tiempo++;
+                that.map.addLayer(markers);
+                if (tiempo < data.length && pausa == false) {
+                    setTimeout(animacion, 2000);
+                }
+            }
+        }
+        animacion();
+
+    }
+
     fechaTraficoLineas() {
         let that = this;
 
@@ -263,16 +381,5 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
             });
         }
     }
-
-
-    pintarLineas(event: Event) {
-        if (this.paintLine) {
-            this.paintLine = false;
-        } else {
-            this.paintLine = true;
-        }
-    }
-
-    //function animate(){ INICIO DE LA PELICULA
 
 }
