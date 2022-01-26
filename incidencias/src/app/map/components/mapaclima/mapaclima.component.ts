@@ -106,7 +106,8 @@ export class MapaclimaComponent implements AfterViewInit {
             this.rango -= 1;;
             this.ajustarlinea(this.rango);
              //that.ajustarTiempo(this.rango)
-            event.preventDefault();       
+            event.preventDefault();      
+            this.empezar(); 
         }
     }
 
@@ -115,7 +116,8 @@ export class MapaclimaComponent implements AfterViewInit {
             this.rango += 1;;
             this.ajustarlinea(this.rango);
             //that.ajustarTiempo(this.rango)
-            event.preventDefault();    
+            event.preventDefault();  
+            this.empezar();  
         }
     }
 
@@ -143,20 +145,11 @@ export class MapaclimaComponent implements AfterViewInit {
         } else {
             this.banderaPausa = true; 
             this.nombrePlayPausa = 'play_circle';
-            this.empezar();
             this.banderaPlayPausa = true;
         }
     }
 
     ajustarlinea(rango: number) {
-        for (let w = 0; w < 143; w++) {
-            if (w == rango) {
-                this.horario = this.horas[w];
-            }
-        }
-    }
-
-    ajustarTiempo(rango: number) {
         for (let w = 0; w < 143; w++) {
             if (this.listaClima[rango]["hora"] == this.horas[w]) {
                 this.horario = this.horas[w];
@@ -175,7 +168,6 @@ export class MapaclimaComponent implements AfterViewInit {
 
             if(this.num != 0){
                 this.tamSecciones = this.listaClima[0]["clima"].length;
-                //this.ajustarTiempo()
                 console.log(this.num)
                 let marker;
                 for (let i = 0; i < this.tamSecciones; i++) {
@@ -223,7 +215,7 @@ export class MapaclimaComponent implements AfterViewInit {
             let marker;
             let pausa = that.banderaPausa;
             that.ajustarlinea(hora_minuto);
-            //that.ajustarTiempo(hora_minuto)
+
             for (let i = 0; i < (data[0]["clima"].length); i++) {
                 let temperaturaSeccion = Number(JSON.stringify(data[hora_minuto]['clima'][i].datos.main.temp))
                 let nombreSeccion = data[hora_minuto]['clima'][i].datos.name;
@@ -245,8 +237,8 @@ export class MapaclimaComponent implements AfterViewInit {
             }
             hora_minuto++;
             if (hora_minuto < datos && pausa == false) {
-                
-                setTimeout(animacionTermometros, 3000);
+                that.rango++;
+                setTimeout(animacionTermometros, 1000);
             }
         }
         animacionTermometros();
