@@ -2,7 +2,7 @@
 
     <div class="form-group">
         <input type="date" [value]="fechaConsulta" #fechaTrafico class="">
-        <button class="btn btn-primary form" (click)="buscarFecha($event, fechaTrafico.value )">Buscar</button>
+        <button class="btn btn-primary form" (click)="buscarFecha($event, fechaTrafico.value )" [disabled]="activarFecha">Buscar</button>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="paintLine" id="paintLine"
                 (change)="pintarLineas($event)">
@@ -10,6 +10,24 @@
                 Pintar lineas
             </label>
         </div>
+
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="opcionMostrar" #climaTrafico value="climaTrafico" id="opcion1" (click)="mostrarDato( climaTrafico.value )">
+            <label class="form-check-label" for="opcion1">
+                Mostrar clima y tráfico
+            </label>
+            <input class="form-check-input" type="radio" name="opcionMostrar" #clima value="clima" id="opcion2" (click)="mostrarDato( clima.value )">
+            <label class="form-check-label" for="opcion2">
+                Mostrar clima
+            </label>
+            <input class="form-check-input" type="radio" name="opcionMostrar" #trafico value="trafico" id="opcion3" (click)="mostrarDato( trafico.value )">
+            <label class="form-check-label" for="opcion3">
+                Mostrar tráfico
+            </label>
+        </div>
+
+
     </div>
     <form>
     <div class="row ">

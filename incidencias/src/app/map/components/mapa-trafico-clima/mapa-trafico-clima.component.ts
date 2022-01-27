@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from "../../../services/map.service";
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { data } from 'jquery';
@@ -14,9 +14,13 @@ import { data } from 'jquery';
 })
 export class MapaTraficoClimaComponent implements AfterViewInit {
 
+
+
     //Variables
+    activarFecha: boolean = true
     fechaConsulta: string = "2021-10-01";
     banderaPausa: boolean = false;
+    opcionDatos: string = ''
     banderaMapa: boolean = true;
     map: any;
     activarBtn = true;
@@ -93,7 +97,6 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         })
 
     }
-
  
     ngAfterViewInit() {
 
@@ -201,7 +204,6 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
                     
                 }
                 this.rangoC += 1;
-                this.activarBtn = false;
             }else
                 alert("Lo sentimos, este día no esta registrado");
         });
@@ -274,6 +276,12 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         }
     }
 
+    mostrarDato(info) {
+        this.opcionDatos = info;
+        this.activarFecha = false;
+    }
+
+
     reproducir(event: Event) {
         event.preventDefault();
         if (this.banderaPlayPausa) {
@@ -282,8 +290,14 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
             }
             this.banderaPausa = false;
             //Pintar ambos comparando check o radiobutton
-            this.pintarClosters(this.rangoC);
-            this.empezar();
+            if (this.opcionDatos == 'climaTrafico' ) {
+                this.pintarClosters(this.rangoC);
+                this.empezar();   
+            } else if (this.opcionDatos == "clima") {
+                this.empezar();   
+            } else{
+                this.pintarClosters(this.rangoC);
+            }
             //otro pintar clima
             //this.empezar();
 
