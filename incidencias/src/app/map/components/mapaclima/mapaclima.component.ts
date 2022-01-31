@@ -168,7 +168,7 @@ export class MapaclimaComponent implements AfterViewInit {
 
             if(this.num != 0){
                 this.tamSecciones = this.listaClima[0]["clima"].length;
-                console.log(this.num)
+                console.log(this.tamSecciones)
                 let marker;
                 for (let i = 0; i < this.tamSecciones; i++) {
                     let temperaturaSeccion = Number(JSON.stringify(data[0]['clima'][i].datos.main.temp))
