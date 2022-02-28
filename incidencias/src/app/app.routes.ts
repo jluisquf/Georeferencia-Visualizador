@@ -10,6 +10,7 @@ import { PageMapcrUComponent } from './map/pages/page-mapcr-u/page-mapcr-u.compo
 import { PageMaptComponent } from './map/pages/page-mapt/page-mapt.component';
 import { PageMapcliComponent } from './map/pages/page-mapcli/page-mapcli.component';
 import { PageMaptrafyclimComponent } from './map/pages/page-maptrafyclim/page-maptrafyclim.component';
+import { PageMapcontaComponent } from './map/pages/page-mapconta/page-mapconta.component';
 
 //arreglo de rutas 
 const APP_ROUTES:Routes=[
@@ -25,6 +26,7 @@ const APP_ROUTES:Routes=[
     {path: 'mapatrafico',component:PageMaptComponent},
     {path: 'mapaclima',component:PageMapcliComponent},
     {path: 'mapatraficoyclima',component:PageMaptrafyclimComponent},
+    {path: 'mapacontaminacion',component:PageMapcontaComponent},
     {path: '**', pathMatch:'full', redirectTo:'home'}
 
 ];

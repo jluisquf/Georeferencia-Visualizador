@@ -18,6 +18,8 @@ import { MapaclimaComponent } from './components/mapaclima/mapaclima.component';
 import { PageMapcliComponent } from './pages/page-mapcli/page-mapcli.component';
 import { MapaTraficoClimaComponent } from './components/mapa-trafico-clima/mapa-trafico-clima.component';
 import { PageMaptrafyclimComponent } from './pages/page-maptrafyclim/page-maptrafyclim.component';
+import { MapaContaminacionComponent } from './components/mapa-contaminacion/mapa-contaminacion.component';
+import { PageMapcontaComponent } from './pages/page-mapconta/page-mapconta.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import { PageMaptrafyclimComponent } from './pages/page-maptrafyclim/page-maptra
     MapaclimaComponent, 
     PageMapcliComponent, 
     MapaTraficoClimaComponent,
-    PageMaptrafyclimComponent, 
+    PageMaptrafyclimComponent,
+    MapaContaminacionComponent,
+    PageMapcontaComponent,
     
   ],
   imports: [

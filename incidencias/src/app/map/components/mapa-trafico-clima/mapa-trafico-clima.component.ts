@@ -8,9 +8,9 @@ import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { data } from 'jquery';
 
 @Component({
-  selector: 'app-mapa-trafico-clima',
-  templateUrl: './mapa-trafico-clima.component.html',
-  styleUrls: ['./mapa-trafico-clima.component.css']
+    selector: 'app-mapa-trafico-clima',
+    templateUrl: './mapa-trafico-clima.component.html',
+    styleUrls: ['./mapa-trafico-clima.component.css']
 })
 export class MapaTraficoClimaComponent implements AfterViewInit {
 
@@ -100,7 +100,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
         })
 
     }
- 
+
     ngAfterViewInit() {
 
         //Obtenemos de manera dinamica los lugares a mostrar en el input select
@@ -391,7 +391,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
                         segment.addTo(capaLineas);//aggrega al mapa
                     }//fin for k
                 }
-               
+                
                     that.map.addLayer(capaLineas);
                 
 
