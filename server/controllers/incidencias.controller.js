@@ -35,6 +35,7 @@ const traficodenso2 = require('../models/traficoDenso');
 const traficoDenso = require('../models/traficoDenso');
 const clima = require('../models/clima');
 const contaminacion = require('../models/contaminacion')
+const estaciones = require('../models/estaciones')
 
 const IncidenciasCtrl = {};
 
@@ -164,5 +165,9 @@ IncidenciasCtrl.diaClima = async(req, res) => {
 IncidenciasCtrl.diaContaminacion = async(req, res) => {
     const datosContaminacion = await contaminacion.find({'fecha': new RegExp(req.params.fecha)}).sort({'fecha': 1});
     res.json(datosContaminacion);
+}
+IncidenciasCtrl.estaciones = async(req, res) => {
+    const datosEstaciones = await estaciones.find().limit();
+    res.json(datosEstaciones);
 }
 module.exports = IncidenciasCtrl;
