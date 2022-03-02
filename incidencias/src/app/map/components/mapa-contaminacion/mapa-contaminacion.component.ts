@@ -113,7 +113,8 @@ export class MapaContaminacionComponent implements AfterViewInit {
     this.fechaConsulta = value;
     console.log(this.fechaConsulta);
     this.rango = 0;
-    this.enpezarDatos(this.fechaConsulta);    
+    this.enpezarDatos(this.fechaConsulta);   
+    this.estaciones() 
   }
 
   enpezarDatos(fecha){
@@ -123,6 +124,12 @@ export class MapaContaminacionComponent implements AfterViewInit {
             console.log(this.listaContaminacion)
         });
     }
+  estaciones(){
+    this.mapServiceU.getEstaciones().subscribe((data: any) => {
+        this.lista = Object.values(data);
+        console.log(this.lista)
+    });
+  }
 
   reproducir(event: Event) {
       event.preventDefault();

@@ -70,5 +70,11 @@ export class MapService {
     // return this.http.get('http://palancar.izt.uam.mx:4005/traficoDenso/');
     //return this.http.get(this.URL_API+'/traficoDenso2020/'+fecha));
   }
+
+  getEstaciones(){
+    return this.http.get(this.URL_API+'/estaciones');
+    // return this.http.get('http://palancar.izt.uam.mx:4005/traficoDenso/');
+    //return this.http.get(this.URL_API+'/traficoDenso2020/'+fecha));
+  }
   
 }
