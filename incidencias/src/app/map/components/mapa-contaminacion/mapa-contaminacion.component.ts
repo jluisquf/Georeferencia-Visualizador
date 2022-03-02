@@ -34,26 +34,68 @@ export class MapaContaminacionComponent implements AfterViewInit {
   rangeControl = new FormControl(this.rango, [Validators.max(143), Validators.min(0)]);
 
   //Iconos
-  IconFrio = L.icon({
-      iconUrl: '../.././assets/frio.png', 
-      iconSize: [30, 30],
-      iconAnchor: [30, 30],
-      popupAnchor: [-15, -35]
-  });
+    IconNO = L.icon({
+        iconUrl: '../.././assets/NO.png', 
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconNO2 = L.icon({
+        iconUrl: '../.././assets/NO2.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconNOx = L.icon({
+        iconUrl: '../.././assets/NOx.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
 
-  IconCaliente = L.icon({
-      iconUrl: '../.././assets/calor.png',
-      iconSize: [30, 30],
-      iconAnchor: [30, 30],
-      popupAnchor: [-15, -35]
-  });
-
-  IconMedio= L.icon({
-      iconUrl: '../.././assets/medio.png',
-      iconSize: [30, 30],
-      iconAnchor: [30, 30],
-      popupAnchor: [-15, -35]
-  });
+    IconCO = L.icon({
+        iconUrl: '../.././assets/CO.png', 
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IcoO3 = L.icon({
+        iconUrl: '../.././assets/O3.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconPM25 = L.icon({
+        iconUrl: '../.././assets/PM2,5.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconPM10 = L.icon({
+        iconUrl: '../.././assets/PM10.png', 
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconSO2 = L.icon({
+        iconUrl: '../.././assets/SO2.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
+    
+    IconPMCO = L.icon({
+        iconUrl: '../.././assets/PMCO.png',
+        iconSize: [30, 30],
+        iconAnchor: [30, 30],
+        popupAnchor: [-15, -35]
+    });
 
   @ViewChild('mapClustering', { static: true }) mapContainer: ElementRef;
   time: NgbTimeStruct = { hour: 0, minute: 2, second: 0 };
