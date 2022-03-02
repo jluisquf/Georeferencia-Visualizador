@@ -5,8 +5,8 @@ import { HttpClient } from "@angular/common/http";//para comunicar con nuestra A
   providedIn: 'root'
 })
 export class MapService {
-  // readonly URL_API= 'http://localhost:3000';
-  readonly URL_API= 'http://palancar.izt.uam.mx:4005';
+  readonly URL_API= 'http://localhost:3000';
+  //readonly URL_API= 'http://palancar.izt.uam.mx:4005';
 
   constructor(private http:HttpClient) { }
 
@@ -63,6 +63,12 @@ export class MapService {
       //return this.http.get('http://palancar.izt.uam.mx:4005/clima/');
 
     //return this.http.get(this.URL_API+'/clima2020/'+fecha);
+  }
+
+  getContaminacion( fecha : string ){
+      return this.http.get(this.URL_API+'/contaminacion2020/'+fecha);
+    // return this.http.get('http://palancar.izt.uam.mx:4005/traficoDenso/');
+    //return this.http.get(this.URL_API+'/traficoDenso2020/'+fecha));
   }
   
 }

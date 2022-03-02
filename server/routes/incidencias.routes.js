@@ -28,8 +28,7 @@ app.get('/incidencias', incidencia.incidencia);
 app.get('/traficoDenso/:fecha', incidencia.diaTrafico);
 
 app.get('/clima2021/:fecha', incidencia.diaClima);
-
-
+app.get('/contaminacion2020/:fecha', incidencia.diaContaminacion);
 
 
 module.exports = app;

@@ -14,7 +14,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 export class MapaContaminacionComponent implements AfterViewInit {
 
   //Variables
-  fechaConsulta: string = "2021-10-01";
+  fechaConsulta: string = "2020-01-01";
   banderaPausa: boolean = false;
   banderaMapa: boolean = true;
   map: any;
@@ -61,7 +61,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
   //TIMEPICKER
 
   lista: string[] = [""];//agrupa todos los lugares con incidencias
-  listaClima: string[] = [""];//agrupa todos los lugares con incidencias
+  listaContaminacion: string[] = [""];//agrupa todos los lugares con incidencias
 
   //MAPA CLUSTER VISTO POR TODOS LOS METODOS DE LA CLASE
   mapClustering: any;
@@ -79,9 +79,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
   ngAfterViewInit() {
 
       //Obtenemos de manera dinamica los lugares a mostrar en el input select
-      this.mapServiceU.getCities().subscribe((data: any) => {
-          this.lista = Object.values(data);
-      });
+      
 
       this.map = L.map('mapid').setView([19.37596, -99.07000], 11);
       //Fondo de trafico denso
@@ -108,27 +106,33 @@ export class MapaContaminacionComponent implements AfterViewInit {
       
   }
 
+  
   buscarFecha(event: Event, value) {
-      this.banderaPausa = false;
-      event.preventDefault();       
+    this.banderaPausa = false;
+    event.preventDefault();
+    this.fechaConsulta = value;
+    console.log(this.fechaConsulta);
+    this.rango = 0;
+    this.enpezarDatos(this.fechaConsulta);    
   }
+
+  enpezarDatos(fecha){
+        let fechaC = fecha;
+        this.mapServiceU.getContaminacion(fechaC).subscribe((data: any) => {
+            this.listaContaminacion = Object.values(data);
+            console.log(this.listaContaminacion)
+        });
+    }
 
   reproducir(event: Event) {
       event.preventDefault();
   }
 
-  
-  
-  
-  
   fechaTraficoLineas() {
       let that = this;
 
       if (this.banderaMapa) {
-          this.mapServiceU.getAlcaldias().subscribe((data: any) => {
-              L.geoJSON(data[0]).addTo(that.map);
-              this.banderaMapa = false;
-          });
+          
       }
   }
 
@@ -139,9 +143,6 @@ export class MapaContaminacionComponent implements AfterViewInit {
         this.paintLine = true;
     }
 }
-
-  
-
   //function animate(){ INICIO DE LA PELICULA
 
 }
