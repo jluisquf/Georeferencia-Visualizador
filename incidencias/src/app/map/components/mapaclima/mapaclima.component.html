@@ -23,7 +23,10 @@
     
     <div class="form-group">
         <input type="time" class="form-control col-md-2" [value]="horario" formControl="timeCtrl" [readonly]="true">
-        <br>
+        <div class="semaforo">
+            <span [className]="rojo ? 'luces-circulo red': 'luces-circulo'" color = "red"></span>
+            <span [className]="verde ? 'luces-circulo green': 'luces-circulo'" color= "green"></span>
+        </div>
         <button class="btn btn-primary form col-md-2" (click)="controlAtras($event)" [disabled]="activarBtn"><span
                 class="material-icons">skip_previous</span></button>
         <button class="btn btn-primary form col-md-2" (click)="reproducir($event)" [disabled]="activarBtn"><span
