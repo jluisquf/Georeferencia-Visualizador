@@ -5,8 +5,8 @@ import { HttpClient } from "@angular/common/http";//para comunicar con nuestra A
   providedIn: 'root'
 })
 export class MapService {
-  readonly URL_API= 'http://localhost:3000';
-  //readonly URL_API= 'http://palancar.izt.uam.mx:4005';
+  //readonly URL_API= 'http://localhost:3000';
+  readonly URL_API= 'http://palancar.izt.uam.mx:4005';
 
   constructor(private http:HttpClient) { }
 

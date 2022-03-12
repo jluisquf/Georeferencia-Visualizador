@@ -26,6 +26,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
   banderaPlayPausa: boolean = true;
   horario: string = "00:00:00";
   markers: any[]=[];
+  markerClouster: any;
   tamSecciones: number = 0;
   num:number;
   horas: string[] = ["00:00:00", "01:00:00", "02:00:00", "03:00:00", "04:00:00", "05:00:00", "06:00:00", "07:00:00", "08:00:00",  "09:00:00", "10:00:00",  "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00","19:00:00","20:00:00", "21:00:00", "22:00:00", "23:00:00"]
@@ -36,63 +37,63 @@ export class MapaContaminacionComponent implements AfterViewInit {
   //Iconos
     IconNO = L.icon({
         iconUrl: '../.././assets/NO.png', 
-        iconSize: [50, 50],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconNO2 = L.icon({
         iconUrl: '../.././assets/NO2.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconNOx = L.icon({
         iconUrl: '../.././assets/NOx.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
 
     IconCO = L.icon({
         iconUrl: '../.././assets/CO.png', 
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconO3 = L.icon({
         iconUrl: '../.././assets/O3.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPM25 = L.icon({
         iconUrl: '../.././assets/PM2,5.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPM10 = L.icon({
         iconUrl: '../.././assets/PM10.png', 
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconSO2 = L.icon({
         iconUrl: '../.././assets/SO2.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPMCO = L.icon({
         iconUrl: '../.././assets/PMCO.png',
-        iconSize: [30, 30],
+        iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
@@ -128,7 +129,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
 
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
           maxZoom: 18,
-          minZoom: 10,
+          minZoom: 7,
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
               '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
               'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -141,11 +142,13 @@ export class MapaContaminacionComponent implements AfterViewInit {
   }//FIN OnInit
 
   controlAtras(event: Event) {
-    
+    event.preventDefault();
+    this.limpiar();
   }
 
   controlAdelante(event: Event) {
-      
+    event.preventDefault();
+    this.empezarDatos(this.fechaConsulta); 
   }
 
   
@@ -156,10 +159,10 @@ export class MapaContaminacionComponent implements AfterViewInit {
     console.log(this.fechaConsulta);
     this.rango = 0;
     this.estaciones() ;
-    this.enpezarDatos(this.fechaConsulta);   
+    this.empezarDatos(this.fechaConsulta);   
   }
 
-  enpezarDatos(fecha){
+  empezarDatos(fecha){
         let fechaC = fecha;
         this.mapServiceU.getContaminacion(fechaC).subscribe((data: any) => {
             this.listaContaminacion = Object.values(data);
@@ -170,54 +173,73 @@ export class MapaContaminacionComponent implements AfterViewInit {
                     this.tamSecciones ++;
             }
             let marker;
+            let markers = L.markerClusterGroup();
+   
             for (let i = 0; i < this.tamSecciones; i++) {
             let latitud = parseFloat(this.lista[0][this.listaContaminacion[0]["datos"]["contaminacion"][i][3]]["latitud"] )
             let longitud = parseFloat(this.lista[0][this.listaContaminacion[0]["datos"]["contaminacion"][i][3]]["longitud"]) 
             
             switch(this.listaContaminacion[0]["datos"]["contaminacion"][i][4]) { 
                 case 'NO': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconNO }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconNO }).bindPopup( "Particula: Monóxido de nitrógeno  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5]);                  
                     break;
                 } 
                 case 'NO2': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconNO2 }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconNO2 }).bindPopup( "Particula: Dióxido de nitrógeno valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 }
                 case 'NOx': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconNOx }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconNOx }).bindPopup( "Particula: Óxido de nitrógeno valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 } 
                 case 'O3': {
-                    marker = new L.marker([latitud, longitud], { icon: this.IconO3 }).addTo(this.map).bindPopup( " °C: " );                   
+                    marker = new L.marker([latitud, longitud], { icon: this.IconO3 }).bindPopup( "Particula: Ozono valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                   
                     break;
                 } 
                 case 'PM2.5': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconPM25 }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconPM25 }).bindPopup( "Particula: Materia particulada 2.5 valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 } 
                 case 'PM10': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconPM10 }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconPM10 }).bindPopup( "Particula: Materia particulada 10 valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 } 
                 case 'PMCO': {
-                    marker = new L.marker([latitud, longitud], { icon: this.IconPMCO }).addTo(this.map).bindPopup( " °C: " );                   
+                    marker = new L.marker([latitud, longitud], { icon: this.IconPMCO }).bindPopup( "Particula: Nivel de particulado de fracción gruesa  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                   
                     break;
                 } 
                 case 'SO2': { 
-                    marker = new L.marker([latitud, longitud], { icon: this.IconSO2 }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconSO2 }).bindPopup( "Particula: Dióxido De Azufre valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 } 
                 case 'CO':{
-                    marker = new L.marker([latitud, longitud], { icon: this.IconCO }).addTo(this.map).bindPopup( " °C: " );                  
+                    marker = new L.marker([latitud, longitud], { icon: this.IconCO }).bindPopup( "Particula: Monóxido de carbono  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
+                    //marker = new L.marker([latitud, longitud], { icon: this.IconCO }).addTo(this.map).bindPopup( "Particula: Monóxido de carbono  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
                     break;
                 }
                 default: { 
                    break; 
                 } 
              } 
+            
+            markers.addLayer(marker);
             this.markers.push(marker);
+            this.markerClouster= markers;  
+            markers.addTo(this.map);
             }
+            this.activarBtn = false;
         });
+    }
+
+    limpiar(){
+        
+        for (let i = 0; i < this.tamSecciones; i++) {
+            this.map.removeLayer(this.markers[i]);
+        }     
+        this.map.removeLayer(this.markerClouster);
+        this.markers = [];
+        
+           
     }
   estaciones(){
     this.mapServiceU.getEstaciones().subscribe((data: any) => {
@@ -231,7 +253,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
 
   fechaTraficoLineas() {
       let that = this;
-
+    
       if (this.banderaMapa) {
           
       }
