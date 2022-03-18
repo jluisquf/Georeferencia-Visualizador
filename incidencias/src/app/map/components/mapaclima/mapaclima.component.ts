@@ -261,12 +261,12 @@ export class MapaclimaComponent implements AfterViewInit {
                         that.markers.push(marker);
                     }                   
                 }
-            }
-            hora_minuto++;
-            if (hora_minuto < datos && pausa == false) {
-                that.rango++;
-                that.posicion++;
-                setTimeout(animacionTermometros, 1000);
+                hora_minuto++;
+                if (hora_minuto < datos && pausa == false) {
+                    that.rango++;
+                    that.posicion++;
+                    setTimeout(animacionTermometros, 1000);
+                }
             }
         }
         animacionTermometros();
