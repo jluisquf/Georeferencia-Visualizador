@@ -31,6 +31,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
     num:number;
     horas: string[] = ["00:00:00", "01:00:00", "02:00:00", "03:00:00", "04:00:00", "05:00:00", "06:00:00", "07:00:00", "08:00:00",  "09:00:00", "10:00:00",  "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00","19:00:00","20:00:00", "21:00:00", "22:00:00", "23:00:00"]
     posicion: number =0;
+    datosHora: number[] = [];
     
     timeCtrl = new FormControl(this.horario, []);
     rangeControl = new FormControl(this.rango, [Validators.max(24), Validators.min(0)]);
@@ -142,30 +143,32 @@ export class MapaContaminacionComponent implements AfterViewInit {
     }//FIN OnInit
 
     controlAtras(event: Event) {
+        event.preventDefault(); 
+        
         if (this.rango > 0) {
+                
+                this.ajustarlinea();
+                this.map.removeLayer(this.markerClouster);
+                this.tamSecciones = this.tamSecciones - this.datosHora[this.rango];
                 this.rango -= 1;
-                this.posicion -=1;
-                //this.ajustarlinea(this.rango,this.posicion);
-                event.preventDefault();      
-                this.empezar();
-                this.limpiar();
+                this.banderaPausa = true
+                this.empezar();    
         }
-        // event.preventDefault();
-        // this.limpiar();
+       
     }
 
     controlAdelante(event: Event) {
+        event.preventDefault();  
         if (this.rango < 24) {
+            
+            this.ajustarlinea(); 
+            this.map.removeLayer(this.markerClouster);
+            this.tamSecciones = this.tamSecciones + this.datosHora[this.rango];    
             this.rango += 1;
-            this.posicion += 1;
-            //this.ajustarlinea(this.rango,this.posicion);
-            //that.ajustarTiempo(this.rango)
-            event.preventDefault();  
-            this.empezarDatos(this.fechaConsulta); 
-            // this.limpiar(); 
+            this.banderaPausa = true       
+            this.empezar(); 
         }
-        // event.preventDefault();
-        // this.empezarDatos(this.fechaConsulta); 
+     
     }
 
 
@@ -178,21 +181,32 @@ export class MapaContaminacionComponent implements AfterViewInit {
         this.estaciones();
         this.empezarDatos(this.fechaConsulta);   
     }
-
+    
+    ajustarlinea() {
+            
+        this.horario = this.horas[this.rango];
+        
+    }
     empezarDatos(fecha){ //pintartermometros
+
         let fechaC = fecha;
         this.mapServiceU.getContaminacion(fechaC).subscribe((data: any) => {
             this.listaContaminacion = Object.values(data);
             this.num= this.listaContaminacion[0]["datos"]["contaminacion"].length;
-            this.rango++;
-            for (let i = 0; i < this.num; i++) {
-                if(this.listaContaminacion[0]["datos"]["contaminacion"][i][2] == this.horas[this.rango])
-                    this.tamSecciones ++;
+            
+            for (let x = 0; x < 24; x++) {
+                this.tamSecciones = 0
+                for (let i = 0; i < this.num; i++) {
+                    if(this.listaContaminacion[0]["datos"]["contaminacion"][i][2] == this.horas[x])
+                        this.tamSecciones ++;
+                }
+                this.datosHora[x] = this.tamSecciones
             }
+            console.log(this.datosHora)
             let marker;
             let markers = L.markerClusterGroup();
 
-            for (let i = 0; i < this.tamSecciones; i++) {
+            for (let i = 0; i <  this.datosHora[this.rango]; i++) {
             let latitud = parseFloat(this.lista[0][this.listaContaminacion[0]["datos"]["contaminacion"][i][3]]["latitud"] )
             let longitud = parseFloat(this.lista[0][this.listaContaminacion[0]["datos"]["contaminacion"][i][3]]["longitud"]) 
             
@@ -240,107 +254,110 @@ export class MapaContaminacionComponent implements AfterViewInit {
             } 
             
             markers.addLayer(marker);
-            this.markers.push(marker);
-            this.markerClouster= markers;  
+            this.markerClouster= markers
             markers.addTo(this.map);
             }
             this.activarBtn = false;
+            this.rango++;
+            this.tamSecciones = this.datosHora[this.rango];
+            
         });
     }
 
-    limpiar(){
-        
-        for (let i = 0; i < this.tamSecciones; i++) {
-            this.map.removeLayer(this.markers[i]);
-        }     
-        this.map.removeLayer(this.markerClouster);
-        this.markers = [];
-    }
-
     empezar(){
-        let datos = this.num;
         let data = this.listaContaminacion;
+        let dataEstacion = this.lista;
         let hora_minuto= this.rango;
         let that = this;
-        let tam = that.tamSecciones;
-        
+        let tam = this.tamSecciones;
+        let seccion = that.datosHora;
+        let markers = L.markerClusterGroup();
+
         function animacionCompuestos(){
-            // for (let i = 0; i < this.num; i++) {
-            //     if(this.data[0]["datos"]["contaminacion"][i][2] == this.horas[this.rango])
-            //         this.tamSecciones ++;
-            // }
-            let marker;
-            let markers = L.markerClusterGroup();
+           
             let pausa = that.banderaPausa;
-
-            if(hora_minuto != that.rango)
-                hora_minuto--;
-            that.limpiar();
-
-            for (let i = 0; i < tam; i++) {
-                let latitud = parseFloat(that.lista[0][data[0]["datos"]["contaminacion"][i][3]]["latitud"] )
-                let longitud = parseFloat(that.lista[0][data[0]["datos"]["contaminacion"][i][3]]["longitud"]) 
+            let inicio = tam -seccion[hora_minuto];
+            let marker;
             
-                switch(data[0]["datos"]["contaminacion"][i][4]) { 
-                    case 'NO': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconNO }).bindPopup( "Particula: Monóxido de nitrógeno  valor: "+ data[0]["datos"]["contaminacion"][i][5]);                  
-                        break;
+            console.log (inicio)
+            console.log (tam)
+            if(seccion[0]>0)
+
+                markers.clearLayers();
+                that.map.removeLayer(markers);
+
+            that.ajustarlinea();
+            markers = L.markerClusterGroup();
+
+            for (let i = inicio; i < tam; i++) {
+                    let latitud = parseFloat(dataEstacion[0][data[0]["datos"]["contaminacion"][i][3]]["latitud"] )
+                    let longitud = parseFloat(dataEstacion[0][data[0]["datos"]["contaminacion"][i][3]]["longitud"]) 
+                
+                    switch(data[0]["datos"]["contaminacion"][i][4]) { 
+                        case 'NO': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconNO }).bindPopup( "Particula: Monóxido de nitrógeno  valor: "+ data[0]["datos"]["contaminacion"][i][5]);                  
+                            break;
+                        } 
+                        case 'NO2': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconNO2 }).bindPopup( "Particula: Dióxido de nitrógeno valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        }
+                        case 'NOx': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconNOx }).bindPopup( "Particula: Óxido de nitrógeno valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        } 
+                        case 'O3': {
+                            marker = new L.marker([latitud, longitud], { icon: that.IconO3 }).bindPopup( "Particula: Ozono valor: "+ data[0]["datos"]["contaminacion"][i][5] );                   
+                            break;
+                        } 
+                        case 'PM2.5': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconPM25 }).bindPopup( "Particula: Materia particulada 2.5 valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        } 
+                        case 'PM10': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconPM10 }).bindPopup( "Particula: Materia particulada 10 valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        } 
+                        case 'PMCO': {
+                            marker = new L.marker([latitud, longitud], { icon: that.IconPMCO }).bindPopup( "Particula: Nivel de particulado de fracción gruesa  valor: "+ data[0]["datos"]["contaminacion"][i][5] );                   
+                            break;
+                        } 
+                        case 'SO2': { 
+                            marker = new L.marker([latitud, longitud], { icon: that.IconSO2 }).bindPopup( "Particula: Dióxido De Azufre valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        } 
+                        case 'CO':{
+                            marker = new L.marker([latitud, longitud], { icon: that.IconCO }).bindPopup( "Particula: Monóxido de carbono  valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
+                            //marker = new L.marker([latitud, longitud], { icon: this.IconCO }).addTo(this.map).bindPopup( "Particula: Monóxido de carbono  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
+                            break;
+                        }
+                        default: { 
+                            break; 
+                        } 
                     } 
-                    case 'NO2': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconNO2 }).bindPopup( "Particula: Dióxido de nitrógeno valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    }
-                    case 'NOx': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconNOx }).bindPopup( "Particula: Óxido de nitrógeno valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    } 
-                    case 'O3': {
-                        marker = new L.marker([latitud, longitud], { icon: that.IconO3 }).bindPopup( "Particula: Ozono valor: "+ data[0]["datos"]["contaminacion"][i][5] );                   
-                        break;
-                    } 
-                    case 'PM2.5': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconPM25 }).bindPopup( "Particula: Materia particulada 2.5 valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    } 
-                    case 'PM10': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconPM10 }).bindPopup( "Particula: Materia particulada 10 valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    } 
-                    case 'PMCO': {
-                        marker = new L.marker([latitud, longitud], { icon: that.IconPMCO }).bindPopup( "Particula: Nivel de particulado de fracción gruesa  valor: "+ data[0]["datos"]["contaminacion"][i][5] );                   
-                        break;
-                    } 
-                    case 'SO2': { 
-                        marker = new L.marker([latitud, longitud], { icon: that.IconSO2 }).bindPopup( "Particula: Dióxido De Azufre valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    } 
-                    case 'CO':{
-                        marker = new L.marker([latitud, longitud], { icon: that.IconCO }).bindPopup( "Particula: Monóxido de carbono  valor: "+ data[0]["datos"]["contaminacion"][i][5] );                  
-                        //marker = new L.marker([latitud, longitud], { icon: this.IconCO }).addTo(this.map).bindPopup( "Particula: Monóxido de carbono  valor: "+ this.listaContaminacion[0]["datos"]["contaminacion"][i][5] );                  
-                        break;
-                    }
-                    default: { 
-                        break; 
-                    } 
-                } 
-            
-                markers.addLayer(marker);
-                this.markers.push(marker);
-                this.markerClouster= markers;  
-                markers.addTo(this.map);
-    
-                hora_minuto++;
-    
-                if(hora_minuto < datos && pausa == false){
-                    that.rango++;
-                    that.posicion++;
-                    setTimeout(animacionCompuestos, 2000);
-                }
+                
+                    markers.addLayer(marker);
+                    that.markerClouster= markers
+                    //markers.addTo(that.map);
+                    that.map.addLayer(markers);
+        
             }
+            hora_minuto++;
+        
+            if(hora_minuto < 24 && pausa == false){
+                that.rango++;
+                tam = tam + seccion[that.rango];
+                that.tamSecciones = that.tamSecciones + seccion[that.rango];
+                console.log ("final "+ tam)
+                
+                //that.posicion++;
+                setTimeout(animacionCompuestos, 10000);
+            }
+            
         }
         animacionCompuestos();
     }
-
+    
     estaciones(){
         this.mapServiceU.getEstaciones().subscribe((data: any) => {
             this.lista = Object.values(data);
@@ -349,11 +366,9 @@ export class MapaContaminacionComponent implements AfterViewInit {
     
     reproducir(event: Event) {
         event.preventDefault();
-        this.empezar();
         if (this.banderaPlayPausa) {
             if (this.banderaPausa) {
-                //this.borrarClosters();
-    
+                this.map.removeLayer(this.markerClouster);    
             }
             this.banderaPausa = false;
             this.empezar();
