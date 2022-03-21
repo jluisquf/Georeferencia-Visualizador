@@ -38,63 +38,63 @@ export class MapaContaminacionComponent implements AfterViewInit {
     
   //Iconos
     IconNO = L.icon({
-        iconUrl: '../.././assets/NO.png', 
+        iconUrl: '../.././assets/NO.gif', 
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconNO2 = L.icon({
-        iconUrl: '../.././assets/NO2.png',
+        iconUrl: '../.././assets/NO2.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconNOx = L.icon({
-        iconUrl: '../.././assets/NOx.png',
+        iconUrl: '../.././assets/NOx.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
 
     IconCO = L.icon({
-        iconUrl: '../.././assets/CO.png', 
+        iconUrl: '../.././assets/CO.gif', 
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconO3 = L.icon({
-        iconUrl: '../.././assets/O3.png',
+        iconUrl: '../.././assets/O3.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPM25 = L.icon({
-        iconUrl: '../.././assets/PM2,5.png',
+        iconUrl: '../.././assets/PM2,5.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPM10 = L.icon({
-        iconUrl: '../.././assets/PM10.png', 
+        iconUrl: '../.././assets/PM10.gif', 
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconSO2 = L.icon({
-        iconUrl: '../.././assets/SO2.png',
+        iconUrl: '../.././assets/SO2.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
     });
     
     IconPMCO = L.icon({
-        iconUrl: '../.././assets/PMCO.png',
+        iconUrl: '../.././assets/PMCO.gif',
         iconSize: [55, 55],
         iconAnchor: [30, 30],
         popupAnchor: [-15, -35]
@@ -154,7 +154,6 @@ export class MapaContaminacionComponent implements AfterViewInit {
                 this.banderaPausa = true
                 this.empezar();    
         }
-       
     }
 
     controlAdelante(event: Event) {
@@ -168,9 +167,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
             this.banderaPausa = true       
             this.empezar(); 
         }
-     
     }
-
 
     buscarFecha(event: Event, value) {
         this.banderaPausa = false;
@@ -274,7 +271,6 @@ export class MapaContaminacionComponent implements AfterViewInit {
         let markers = L.markerClusterGroup();
 
         function animacionCompuestos(){
-           
             let pausa = that.banderaPausa;
             let inicio = tam -seccion[hora_minuto];
             let marker;
