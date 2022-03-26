@@ -125,7 +125,7 @@ export class MapaContaminacionComponent implements AfterViewInit {
     
           //Obtenemos de manera dinamica los lugares a mostrar en el input select
         
-        this.map = L.map('mapid').setView([19.37596, -99.07000], 10);
+        this.map = L.map(this.mapContainer.nativeElement).setView([19.37596, -99.07000], 10);
           //Fondo de trafico denso
     
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {

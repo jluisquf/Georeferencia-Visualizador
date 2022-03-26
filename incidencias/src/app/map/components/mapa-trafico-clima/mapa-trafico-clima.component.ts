@@ -108,7 +108,7 @@ export class MapaTraficoClimaComponent implements AfterViewInit {
             this.lista = Object.values(data);
         });
 
-        this.map = L.map('mapid').setView([19.37596, -99.07000], 11);
+        this.map = L.map(this.mapContainer.nativeElement).setView([19.37596, -99.07000], 11);
         //Fondo de trafico denso
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
